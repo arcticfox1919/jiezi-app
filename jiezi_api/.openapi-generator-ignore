@@ -1,0 +1,7 @@
+# openapi-generator-ignore
+#
+# Files listed here are NOT overwritten on re-generation.
+# Syntax is identical to .gitignore.
+#
+# Protect any custom integration tests you write by hand.
+test/
