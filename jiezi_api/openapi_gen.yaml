@@ -1,0 +1,15 @@
+openapi_gen:
+  schema_url: http://127.0.0.1:8080/api/v1/openapi.json
+  output_directory: lib/src
+  name: jiezi
+  http_client: gio
+  json_serializer: json_serializable
+  root_client: true
+  root_client_name: JieziClient
+  export_file: true
+  put_clients_in_folder: true
+  mark_files_as_generated: true
+  unknown_enum_value: true
+  exclude_paths:
+    - /api/v1/upload/**
+    - /api/v1/download/**

@@ -3,6 +3,6 @@
 /// More dartdocs go here.
 library;
 
-export 'src/jiezi_api_base.dart';
+export 'src/export.dart';
 
 // TODO: Export any libraries intended for clients of this package.
