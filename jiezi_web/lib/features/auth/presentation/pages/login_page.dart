@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 import 'package:jiezi_web/l10n/app_localizations.dart';
 
+import '../../../../app/router/routes.dart';
 import '../providers/auth_providers.dart';
 
 /// Login page for the admin console.
@@ -132,8 +134,9 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                                 ),
                               ),
                             ),
-                            validator: (v) =>
-                                (v == null || v.isEmpty) ? l10n.fieldRequired : null,
+                            validator: (v) => (v == null || v.isEmpty)
+                                ? l10n.fieldRequired
+                                : null,
                           ),
                           const SizedBox(height: 24),
                           FilledButton(
@@ -159,6 +162,17 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                       ),
                     ),
                   ),
+                ),
+                const SizedBox(height: 16),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(l10n.noAccount),
+                    TextButton(
+                      onPressed: () => context.go(Routes.register),
+                      child: Text(l10n.registerLink),
+                    ),
+                  ],
                 ),
               ],
             ),

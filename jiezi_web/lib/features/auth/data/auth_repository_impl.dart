@@ -75,6 +75,38 @@ class AuthRepositoryImpl implements IAuthRepository {
     }
   }
 
+  @override
+  Future<void> register({
+    required String username,
+    String? displayName,
+    required String email,
+    required String password,
+    String? otp,
+  }) async {
+    try {
+      await _auth.register(
+        body: RegisterRequest(
+          username: username,
+          displayName: displayName,
+          email: email,
+          password: password,
+          emailOtp: otp,
+        ),
+      );
+    } on Exception catch (e) {
+      throw _mapException(e);
+    }
+  }
+
+  @override
+  Future<void> sendRegisterOtp({required String email}) async {
+    try {
+      await _auth.sendRegisterOtp(body: SendOtpRequest(email: email));
+    } on Exception catch (e) {
+      throw _mapException(e);
+    }
+  }
+
   // ── Private helpers ────────────────────────────────────────────────────────
 
   AppError _mapException(Exception e) {

@@ -53,7 +53,7 @@ final class RouterNotifierProvider
   }
 }
 
-String _$routerNotifierHash() => r'284d675307572092a4f3dee80c8a5e5f830fd409';
+String _$routerNotifierHash() => r'42ec9633ccad60e2463f22bdf17aea3631e33a77';
 
 /// Bridges Riverpod state changes into go_router refreshes.
 ///
@@ -117,4 +117,4 @@ final class GoRouterProvider
   }
 }
 
-String _$goRouterHash() => r'20d60aec9b6fceb917ecce7db7d70b3043fec1e3';
+String _$goRouterHash() => r'f36b3c6e2ac1304021adf590e66145c549ab6cf2';

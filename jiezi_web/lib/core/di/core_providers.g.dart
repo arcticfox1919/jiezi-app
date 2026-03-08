@@ -200,7 +200,7 @@ final class HttpClientProvider
   }
 }
 
-String _$httpClientHash() => r'2a6c3d23f7e54f41157cd6442902a3aea2927b8e';
+String _$httpClientHash() => r'ad45646f9c0521a70ec8b5c3ba6a3070c7425231';
 
 @ProviderFor(jieziClient)
 final jieziClientProvider = JieziClientProvider._();

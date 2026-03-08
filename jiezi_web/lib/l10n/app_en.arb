@@ -67,6 +67,9 @@
   "passwordTooltip": "Minimum 8 characters. Use a mix of letters, numbers and symbols for a stronger password.",
   "@passwordTooltip": {},
 
+  "emailTooltip": "Used for account recovery and (when enabled) email verification. Never shared publicly.",
+  "@emailTooltip": {},
+
   "adminAccountNote": "You are creating the super-admin account. This account has full control over the server and cannot be deleted.",
   "@adminAccountNote": {},
 
@@ -143,5 +146,47 @@
   "@stepAccountLabel": {},
 
   "stepAdvancedLabel": "Advanced",
-  "@stepAdvancedLabel": {}
+  "@stepAdvancedLabel": {},
+
+  "registerTitle": "Create Account",
+  "@registerTitle": {},
+
+  "registerButton": "Create Account",
+  "@registerButton": {},
+
+  "noAccount": "Don't have an account?",
+  "@noAccount": {},
+
+  "registerLink": "Register",
+  "@registerLink": {},
+
+  "alreadyHaveAccount": "Already have an account?",
+  "@alreadyHaveAccount": {},
+
+  "signInLink": "Sign in",
+  "@signInLink": {},
+
+  "otpLabel": "Verification Code",
+  "@otpLabel": {},
+
+  "otpHint": "6-digit code",
+  "@otpHint": {},
+
+  "sendCodeButton": "Send Code",
+  "@sendCodeButton": {},
+
+  "codeSentMessage": "A verification code has been sent to your email.",
+  "@codeSentMessage": {},
+
+  "otpRequiredMessage": "Email verification is required. Enter the code sent to your inbox.",
+  "@otpRequiredMessage": {},
+
+  "registrationDisabledError": "Registration is currently disabled by the administrator.",
+  "@registrationDisabledError": {},
+
+  "accountExistsError": "An account with this username or email already exists.",
+  "@accountExistsError": {},
+
+  "registerSuccessMessage": "Account created! Signing you in\u2026",
+  "@registerSuccessMessage": {}
 }

@@ -230,6 +230,12 @@ abstract class AppLocalizations {
   /// **'Minimum 8 characters. Use a mix of letters, numbers and symbols for a stronger password.'**
   String get passwordTooltip;
 
+  /// No description provided for @emailTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Used for account recovery and (when enabled) email verification. Never shared publicly.'**
+  String get emailTooltip;
+
   /// No description provided for @adminAccountNote.
   ///
   /// In en, this message translates to:
@@ -385,6 +391,90 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Advanced'**
   String get stepAdvancedLabel;
+
+  /// No description provided for @registerTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Create Account'**
+  String get registerTitle;
+
+  /// No description provided for @registerButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Create Account'**
+  String get registerButton;
+
+  /// No description provided for @noAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Don\'t have an account?'**
+  String get noAccount;
+
+  /// No description provided for @registerLink.
+  ///
+  /// In en, this message translates to:
+  /// **'Register'**
+  String get registerLink;
+
+  /// No description provided for @alreadyHaveAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Already have an account?'**
+  String get alreadyHaveAccount;
+
+  /// No description provided for @signInLink.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in'**
+  String get signInLink;
+
+  /// No description provided for @otpLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Verification Code'**
+  String get otpLabel;
+
+  /// No description provided for @otpHint.
+  ///
+  /// In en, this message translates to:
+  /// **'6-digit code'**
+  String get otpHint;
+
+  /// No description provided for @sendCodeButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Send Code'**
+  String get sendCodeButton;
+
+  /// No description provided for @codeSentMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'A verification code has been sent to your email.'**
+  String get codeSentMessage;
+
+  /// No description provided for @otpRequiredMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Email verification is required. Enter the code sent to your inbox.'**
+  String get otpRequiredMessage;
+
+  /// No description provided for @registrationDisabledError.
+  ///
+  /// In en, this message translates to:
+  /// **'Registration is currently disabled by the administrator.'**
+  String get registrationDisabledError;
+
+  /// No description provided for @accountExistsError.
+  ///
+  /// In en, this message translates to:
+  /// **'An account with this username or email already exists.'**
+  String get accountExistsError;
+
+  /// No description provided for @registerSuccessMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Account created! Signing you in…'**
+  String get registerSuccessMessage;
 }
 
 class _AppLocalizationsDelegate

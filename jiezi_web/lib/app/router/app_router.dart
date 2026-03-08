@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../features/auth/presentation/pages/login_page.dart';
+import '../../features/auth/presentation/pages/register_page.dart';
 import '../../features/auth/presentation/providers/auth_providers.dart';
 import '../../features/dashboard/presentation/pages/dashboard_page.dart';
 import '../../features/setup/presentation/pages/setup_page.dart';
@@ -73,11 +74,13 @@ class RouterNotifier extends _$RouterNotifier implements Listenable {
     final isLoggedIn = authAsync.value?.isLoggedIn ?? false;
 
     final onAuthPage = state.matchedLocation == Routes.login;
+    final onRegisterPage = state.matchedLocation == Routes.register;
 
     if (!isLoggedIn) {
-      return onAuthPage ? null : Routes.login;
+      return (onAuthPage || onRegisterPage) ? null : Routes.login;
     } else if (onSplash ||
         onAuthPage ||
+        onRegisterPage ||
         state.matchedLocation == Routes.setup) {
       return Routes.dashboard;
     }
@@ -113,6 +116,11 @@ GoRouter goRouter(Ref ref) {
         path: Routes.login,
         name: 'login',
         builder: (_, _) => const LoginPage(),
+      ),
+      GoRoute(
+        path: Routes.register,
+        name: 'register',
+        builder: (_, _) => const RegisterPage(),
       ),
       GoRoute(
         path: Routes.dashboard,

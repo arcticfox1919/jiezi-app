@@ -3,6 +3,7 @@ import 'package:gio/gio.dart';
 import 'package:jiezi_api/jiezi_api.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
+import '../../app/env.dart';
 import '../network/bearer_token_interceptor.dart';
 import '../network/token_refresh_interceptor.dart';
 import '../storage/hive_kv_store.dart';
@@ -24,8 +25,7 @@ part 'core_providers.g.dart';
 /// )
 /// ```
 @Riverpod(keepAlive: true)
-String apiBaseUrl(Ref ref) =>
-    const String.fromEnvironment('API_BASE_URL', defaultValue: '');
+String apiBaseUrl(Ref ref) => kApiBaseUrl;
 
 // ────────────────────────────────────────────────────────────────────────────
 // Hive boxes

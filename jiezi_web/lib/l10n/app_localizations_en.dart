@@ -80,6 +80,10 @@ class AppLocalizationsEn extends AppLocalizations {
       'Minimum 8 characters. Use a mix of letters, numbers and symbols for a stronger password.';
 
   @override
+  String get emailTooltip =>
+      'Used for account recovery and (when enabled) email verification. Never shared publicly.';
+
+  @override
   String get adminAccountNote =>
       'You are creating the super-admin account. This account has full control over the server and cannot be deleted.';
 
@@ -158,4 +162,50 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get stepAdvancedLabel => 'Advanced';
+
+  @override
+  String get registerTitle => 'Create Account';
+
+  @override
+  String get registerButton => 'Create Account';
+
+  @override
+  String get noAccount => 'Don\'t have an account?';
+
+  @override
+  String get registerLink => 'Register';
+
+  @override
+  String get alreadyHaveAccount => 'Already have an account?';
+
+  @override
+  String get signInLink => 'Sign in';
+
+  @override
+  String get otpLabel => 'Verification Code';
+
+  @override
+  String get otpHint => '6-digit code';
+
+  @override
+  String get sendCodeButton => 'Send Code';
+
+  @override
+  String get codeSentMessage =>
+      'A verification code has been sent to your email.';
+
+  @override
+  String get otpRequiredMessage =>
+      'Email verification is required. Enter the code sent to your inbox.';
+
+  @override
+  String get registrationDisabledError =>
+      'Registration is currently disabled by the administrator.';
+
+  @override
+  String get accountExistsError =>
+      'An account with this username or email already exists.';
+
+  @override
+  String get registerSuccessMessage => 'Account created! Signing you in…';
 }

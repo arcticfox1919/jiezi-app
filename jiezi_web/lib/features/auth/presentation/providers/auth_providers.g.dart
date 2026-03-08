@@ -148,3 +148,55 @@ abstract class _$AuthNotifier extends $Notifier<AsyncValue<void>> {
     element.handleCreate(ref, build);
   }
 }
+
+@ProviderFor(RegisterNotifier)
+final registerProvider = RegisterNotifierProvider._();
+
+final class RegisterNotifierProvider
+    extends $NotifierProvider<RegisterNotifier, RegisterFormState> {
+  RegisterNotifierProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'registerProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$registerNotifierHash();
+
+  @$internal
+  @override
+  RegisterNotifier create() => RegisterNotifier();
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(RegisterFormState value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<RegisterFormState>(value),
+    );
+  }
+}
+
+String _$registerNotifierHash() => r'299f23f226aea46cae31923f10e233f7da0dc2a3';
+
+abstract class _$RegisterNotifier extends $Notifier<RegisterFormState> {
+  RegisterFormState build();
+  @$mustCallSuper
+  @override
+  void runBuild() {
+    final ref = this.ref as $Ref<RegisterFormState, RegisterFormState>;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<RegisterFormState, RegisterFormState>,
+              RegisterFormState,
+              Object?,
+              Object?
+            >;
+    element.handleCreate(ref, build);
+  }
+}

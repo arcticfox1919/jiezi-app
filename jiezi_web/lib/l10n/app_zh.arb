@@ -67,6 +67,9 @@
   "passwordTooltip": "至少 8 个字符。建议混合使用字母、数字和符号以提高安全性。",
   "@passwordTooltip": {},
 
+  "emailTooltip": "用于账号找回以及（开启时）邮箱验证，不会对外公开。",
+  "@emailTooltip": {},
+
   "adminAccountNote": "您正在创建超级管理员账号。该账号拥有服务器的完整控制权，且不可删除。",
   "@adminAccountNote": {},
 
@@ -143,5 +146,47 @@
   "@stepAccountLabel": {},
 
   "stepAdvancedLabel": "高级",
-  "@stepAdvancedLabel": {}
+  "@stepAdvancedLabel": {},
+
+  "registerTitle": "创建账号",
+  "@registerTitle": {},
+
+  "registerButton": "创建账号",
+  "@registerButton": {},
+
+  "noAccount": "还没有账号？",
+  "@noAccount": {},
+
+  "registerLink": "去注册",
+  "@registerLink": {},
+
+  "alreadyHaveAccount": "已有账号？",
+  "@alreadyHaveAccount": {},
+
+  "signInLink": "去登录",
+  "@signInLink": {},
+
+  "otpLabel": "验证码",
+  "@otpLabel": {},
+
+  "otpHint": "6位验证码",
+  "@otpHint": {},
+
+  "sendCodeButton": "发送验证码",
+  "@sendCodeButton": {},
+
+  "codeSentMessage": "验证码已发送至您的邮箱。",
+  "@codeSentMessage": {},
+
+  "otpRequiredMessage": "需要邮箱验证，请输入收到的验证码。",
+  "@otpRequiredMessage": {},
+
+  "registrationDisabledError": "管理员已关闭注册功能。",
+  "@registrationDisabledError": {},
+
+  "accountExistsError": "该用户名或邮箱已被注册。",
+  "@accountExistsError": {},
+
+  "registerSuccessMessage": "注册成功！正在登录…",
+  "@registerSuccessMessage": {}
 }

@@ -15,6 +15,9 @@ abstract final class Routes {
   /// Login page.
   static const login = '/login';
 
+  /// Registration page for new accounts.
+  static const register = '/register';
+
   /// Root of the authenticated admin dashboard.
   static const dashboard = '/dashboard';
 }

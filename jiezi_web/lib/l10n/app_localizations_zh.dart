@@ -77,6 +77,9 @@ class AppLocalizationsZh extends AppLocalizations {
   String get passwordTooltip => '至少 8 个字符。建议混合使用字母、数字和符号以提高安全性。';
 
   @override
+  String get emailTooltip => '用于账号找回以及（开启时）邮箱验证，不会对外公开。';
+
+  @override
   String get adminAccountNote => '您正在创建超级管理员账号。该账号拥有服务器的完整控制权，且不可删除。';
 
   @override
@@ -153,4 +156,46 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get stepAdvancedLabel => '高级';
+
+  @override
+  String get registerTitle => '创建账号';
+
+  @override
+  String get registerButton => '创建账号';
+
+  @override
+  String get noAccount => '还没有账号？';
+
+  @override
+  String get registerLink => '去注册';
+
+  @override
+  String get alreadyHaveAccount => '已有账号？';
+
+  @override
+  String get signInLink => '去登录';
+
+  @override
+  String get otpLabel => '验证码';
+
+  @override
+  String get otpHint => '6位验证码';
+
+  @override
+  String get sendCodeButton => '发送验证码';
+
+  @override
+  String get codeSentMessage => '验证码已发送至您的邮箱。';
+
+  @override
+  String get otpRequiredMessage => '需要邮箱验证，请输入收到的验证码。';
+
+  @override
+  String get registrationDisabledError => '管理员已关闭注册功能。';
+
+  @override
+  String get accountExistsError => '该用户名或邮箱已被注册。';
+
+  @override
+  String get registerSuccessMessage => '注册成功！正在登录…';
 }
