@@ -7,6 +7,7 @@ import '../../features/auth/presentation/providers/auth_providers.dart';
 import '../../features/dashboard/presentation/pages/dashboard_page.dart';
 import '../../features/setup/presentation/pages/setup_page.dart';
 import '../../features/setup/presentation/providers/setup_providers.dart';
+import '../../features/splash/presentation/pages/splash_page.dart';
 import 'routes.dart';
 
 part 'app_router.g.dart';
@@ -49,8 +50,17 @@ class RouterNotifier extends _$RouterNotifier implements Listenable {
     final setupAsync = ref.read(setupStatusProvider);
     final authAsync = ref.read(authStateProvider);
 
-    // While setup status is loading keep the user where they are.
-    if (setupAsync.isLoading || setupAsync.hasError) return null;
+    final onSplash = state.matchedLocation == Routes.splash;
+
+    // ── Still loading: hold the user on the splash screen ─────────────────
+    if (setupAsync.isLoading || authAsync.isLoading) {
+      return onSplash ? null : Routes.splash;
+    }
+
+    // ── Setup status error: stay on splash and let the user retry ──────────
+    if (setupAsync.hasError) {
+      return onSplash ? null : Routes.splash;
+    }
 
     final setupRequired = setupAsync.value?.setupRequired ?? false;
 
@@ -60,14 +70,15 @@ class RouterNotifier extends _$RouterNotifier implements Listenable {
     }
 
     // ── Auth guard ────────────────────────────────────────────────────────
-    if (authAsync.isLoading) return null;
     final isLoggedIn = authAsync.value?.isLoggedIn ?? false;
 
     final onAuthPage = state.matchedLocation == Routes.login;
 
     if (!isLoggedIn) {
       return onAuthPage ? null : Routes.login;
-    } else if (onAuthPage || state.matchedLocation == Routes.setup) {
+    } else if (onSplash ||
+        onAuthPage ||
+        state.matchedLocation == Routes.setup) {
       return Routes.dashboard;
     }
 
@@ -84,10 +95,15 @@ GoRouter goRouter(Ref ref) {
   final notifier = ref.watch(routerProvider.notifier);
 
   return GoRouter(
-    initialLocation: Routes.login,
+    initialLocation: Routes.splash,
     refreshListenable: notifier,
     redirect: notifier.redirect,
     routes: [
+      GoRoute(
+        path: Routes.splash,
+        name: 'splash',
+        builder: (_, _) => const SplashPage(),
+      ),
       GoRoute(
         path: Routes.setup,
         name: 'setup',

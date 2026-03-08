@@ -15,11 +15,11 @@ final setupRepositoryProvider = SetupRepositoryProvider._();
 final class SetupRepositoryProvider
     extends
         $FunctionalProvider<
+          AsyncValue<ISetupRepository>,
           ISetupRepository,
-          ISetupRepository,
-          ISetupRepository
+          FutureOr<ISetupRepository>
         >
-    with $Provider<ISetupRepository> {
+    with $FutureModifier<ISetupRepository>, $FutureProvider<ISetupRepository> {
   SetupRepositoryProvider._()
     : super(
         from: null,
@@ -36,24 +36,17 @@ final class SetupRepositoryProvider
 
   @$internal
   @override
-  $ProviderElement<ISetupRepository> $createElement($ProviderPointer pointer) =>
-      $ProviderElement(pointer);
+  $FutureProviderElement<ISetupRepository> $createElement(
+    $ProviderPointer pointer,
+  ) => $FutureProviderElement(pointer);
 
   @override
-  ISetupRepository create(Ref ref) {
+  FutureOr<ISetupRepository> create(Ref ref) {
     return setupRepository(ref);
-  }
-
-  /// {@macro riverpod.override_with_value}
-  Override overrideWithValue(ISetupRepository value) {
-    return $ProviderOverride(
-      origin: this,
-      providerOverride: $SyncValueProvider<ISetupRepository>(value),
-    );
   }
 }
 
-String _$setupRepositoryHash() => r'6242c7b793d166cdc2ba689eada4bce33f5e19fe';
+String _$setupRepositoryHash() => r'2eee0ad16f0c795efe6b30c185c367b5fce631a9';
 
 /// Resolves the server's current setup state.
 ///
@@ -103,7 +96,7 @@ final class SetupStatusProvider
   }
 }
 
-String _$setupStatusHash() => r'dd4d9b7a86200e65a617182a75df0fb3cd32e012';
+String _$setupStatusHash() => r'cc21ea74c844779b306d4aa8ab84e5b0635b0289';
 
 /// Manages the asynchronous state of the first-run setup submission.
 
@@ -141,7 +134,7 @@ final class SetupNotifierProvider
   }
 }
 
-String _$setupNotifierHash() => r'bfd5b6d8068697c0eaf87828f197194a8031886c';
+String _$setupNotifierHash() => r'f680eabd54978c4f6ef643811a9cabf905d15429';
 
 /// Manages the asynchronous state of the first-run setup submission.
 

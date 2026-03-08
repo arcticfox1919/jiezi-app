@@ -1,7 +1,9 @@
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../app/router/app_router.dart';
+import '../l10n/app_localizations.dart';
 
 /// Root application widget.
 ///
@@ -21,6 +23,8 @@ class App extends ConsumerWidget {
       darkTheme: _buildTheme(Brightness.dark),
       themeMode: ThemeMode.system,
       routerConfig: router,
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
+      supportedLocales: AppLocalizations.supportedLocales,
     );
   }
 

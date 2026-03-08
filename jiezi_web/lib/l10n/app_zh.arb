@@ -1,0 +1,147 @@
+{
+  "@@locale": "zh",
+
+  "appName": "芥子云",
+  "@appName": {},
+
+  "adminConsoleTitle": "管理控制台",
+  "@adminConsoleTitle": {},
+
+  "setupTitle": "芥子云初始化",
+  "@setupTitle": {},
+
+  "setupSubtitle": "在开始使用前，请完成服务器配置",
+  "@setupSubtitle": {},
+
+  "setupOnceNote": "此页面仅可访问一次，完成配置后将不再可用。",
+  "@setupOnceNote": {},
+
+  "setupCompleteMessage": "初始化完成！正在跳转…",
+  "@setupCompleteMessage": {},
+
+  "siteSettingsTitle": "站点设置",
+  "@siteSettingsTitle": {},
+
+  "siteNameLabel": "站点名称",
+  "@siteNameLabel": {},
+
+  "siteNameHint": "例如：芥子云",
+  "@siteNameHint": {},
+
+  "siteDescriptionLabel": "站点描述",
+  "@siteDescriptionLabel": {},
+
+  "siteDescriptionHint": "可选的站点标语",
+  "@siteDescriptionHint": {},
+
+  "adminAccountTitle": "超级管理员账号",
+  "@adminAccountTitle": {},
+
+  "usernameLabel": "用户名",
+  "@usernameLabel": {},
+
+  "usernameHint": "admin",
+  "@usernameHint": {},
+
+  "usernameRequired": "用户名不能为空",
+  "@usernameRequired": {},
+
+  "usernameFormat": "3—50 个字符：字母、数字、_ 或 -",
+  "@usernameFormat": {},
+
+  "displayNameLabel": "昵称",
+  "@displayNameLabel": {},
+
+  "displayNameHint": "系统管理员",
+  "@displayNameHint": {},
+
+  "displayNameHelper": "在界面中显示，与登录用户名不同",
+  "@displayNameHelper": {},
+
+  "displayNameTooltip": "可选。在界面各处展示您身份时使用的名称，例如评论、文件操作记录等。留空则默认使用用户名。",
+  "@displayNameTooltip": {},
+
+  "usernameTooltip": "这是您的登录凭据，用于登录系统。3–50 个字符。允许：英文字母（a-z、A-Z）、数字（0-9）、下划线（_）、连字符（-）。初始化完成后不可更改。",
+  "@usernameTooltip": {},
+
+  "passwordTooltip": "至少 8 个字符。建议混合使用字母、数字和符号以提高安全性。",
+  "@passwordTooltip": {},
+
+  "adminAccountNote": "您正在创建超级管理员账号。该账号拥有服务器的完整控制权，且不可删除。",
+  "@adminAccountNote": {},
+
+  "emailLabel": "邮箱",
+  "@emailLabel": {},
+
+  "emailHint": "admin@example.com",
+  "@emailHint": {},
+
+  "emailRequired": "邮箱不能为空",
+  "@emailRequired": {},
+
+  "emailInvalid": "请输入有效的邮箱地址",
+  "@emailInvalid": {},
+
+  "passwordLabel": "密码",
+  "@passwordLabel": {},
+
+  "passwordHint": "至少8个字符",
+  "@passwordHint": {},
+
+  "passwordRequired": "密码不能为空",
+  "@passwordRequired": {},
+
+  "passwordTooShort": "密码长度不能少于8个字符",
+  "@passwordTooShort": {},
+
+  "confirmPasswordLabel": "确认密码",
+  "@confirmPasswordLabel": {},
+
+  "passwordMismatch": "两次输入的密码不一致",
+  "@passwordMismatch": {},
+
+  "advancedOptionsTitle": "高级选项",
+  "@advancedOptionsTitle": {},
+
+  "maxUploadLabel": "最大上传大小（MB）",
+  "@maxUploadLabel": {},
+
+  "publicRegistrationLabel": "开放注册",
+  "@publicRegistrationLabel": {},
+
+  "publicRegistrationSubtitle": "允许访客自行创建账号",
+  "@publicRegistrationSubtitle": {},
+
+  "completeSetupButton": "完成初始化",
+  "@completeSetupButton": {},
+
+  "usernameOrEmail": "用户名或邮箱",
+  "@usernameOrEmail": {},
+
+  "fieldRequired": "必填",
+  "@fieldRequired": {},
+
+  "signInButton": "登录",
+  "@signInButton": {},
+
+  "cannotReachServer": "无法连接服务器",
+  "@cannotReachServer": {},
+
+  "retryButton": "重试",
+  "@retryButton": {},
+
+  "nextButton": "下一步",
+  "@nextButton": {},
+
+  "backButton": "上一步",
+  "@backButton": {},
+
+  "stepSiteLabel": "站点",
+  "@stepSiteLabel": {},
+
+  "stepAccountLabel": "账号",
+  "@stepAccountLabel": {},
+
+  "stepAdvancedLabel": "高级",
+  "@stepAdvancedLabel": {}
+}

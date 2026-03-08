@@ -13,11 +13,9 @@ part 'auth_providers.g.dart';
 
 @Riverpod(keepAlive: true)
 Future<IAuthRepository> authRepository(Ref ref) async {
+  final client = await ref.watch(jieziClientProvider.future);
   final storage = await ref.watch(tokenStorageProvider.future);
-  return AuthRepositoryImpl(
-    authClient: ref.watch(jieziClientProvider).auth,
-    tokenStorage: storage,
-  );
+  return AuthRepositoryImpl(authClient: client.auth, tokenStorage: storage);
 }
 
 // ────────────────────────────────────────────────────────────────────────────

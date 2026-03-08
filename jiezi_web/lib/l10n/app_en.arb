@@ -1,0 +1,147 @@
+{
+  "@@locale": "en",
+
+  "appName": "Jiezi Cloud",
+  "@appName": {},
+
+  "adminConsoleTitle": "Admin Console",
+  "@adminConsoleTitle": {},
+
+  "setupTitle": "Jiezi Cloud Setup",
+  "@setupTitle": {},
+
+  "setupSubtitle": "Configure your server before you start",
+  "@setupSubtitle": {},
+
+  "setupOnceNote": "This page is only accessible once. After setup, it will no longer be available.",
+  "@setupOnceNote": {},
+
+  "setupCompleteMessage": "Setup complete! Redirecting\u2026",
+  "@setupCompleteMessage": {},
+
+  "siteSettingsTitle": "Site Settings",
+  "@siteSettingsTitle": {},
+
+  "siteNameLabel": "Site Name",
+  "@siteNameLabel": {},
+
+  "siteNameHint": "e.g. Jiezi Cloud",
+  "@siteNameHint": {},
+
+  "siteDescriptionLabel": "Site Description",
+  "@siteDescriptionLabel": {},
+
+  "siteDescriptionHint": "Optional tagline",
+  "@siteDescriptionHint": {},
+
+  "adminAccountTitle": "Super-Admin Account",
+  "@adminAccountTitle": {},
+
+  "usernameLabel": "Username",
+  "@usernameLabel": {},
+
+  "usernameHint": "admin",
+  "@usernameHint": {},
+
+  "usernameRequired": "Username is required",
+  "@usernameRequired": {},
+
+  "usernameFormat": "3\u201350 chars: letters, numbers, _ or -",
+  "@usernameFormat": {},
+
+  "displayNameLabel": "Nickname",
+  "@displayNameLabel": {},
+
+  "displayNameHint": "System Administrator",
+  "@displayNameHint": {},
+
+  "displayNameHelper": "Shown in the UI; different from your login username",
+  "@displayNameHelper": {},
+
+  "displayNameTooltip": "Optional. The name shown throughout the UI — used wherever your identity is displayed. If left blank it defaults to your username.",
+  "@displayNameTooltip": {},
+
+  "usernameTooltip": "This is your login credential — you will use it to sign in. 3\u201350 characters. Allowed: letters (a-z, A-Z), digits (0-9), underscore (_), hyphen (-). Cannot be changed after setup.",
+  "@usernameTooltip": {},
+
+  "passwordTooltip": "Minimum 8 characters. Use a mix of letters, numbers and symbols for a stronger password.",
+  "@passwordTooltip": {},
+
+  "adminAccountNote": "You are creating the super-admin account. This account has full control over the server and cannot be deleted.",
+  "@adminAccountNote": {},
+
+  "emailLabel": "Email",
+  "@emailLabel": {},
+
+  "emailHint": "admin@example.com",
+  "@emailHint": {},
+
+  "emailRequired": "Email is required",
+  "@emailRequired": {},
+
+  "emailInvalid": "Enter a valid email address",
+  "@emailInvalid": {},
+
+  "passwordLabel": "Password",
+  "@passwordLabel": {},
+
+  "passwordHint": "Minimum 8 characters",
+  "@passwordHint": {},
+
+  "passwordRequired": "Password is required",
+  "@passwordRequired": {},
+
+  "passwordTooShort": "Password must be at least 8 characters",
+  "@passwordTooShort": {},
+
+  "confirmPasswordLabel": "Confirm Password",
+  "@confirmPasswordLabel": {},
+
+  "passwordMismatch": "Passwords do not match",
+  "@passwordMismatch": {},
+
+  "advancedOptionsTitle": "Advanced Options",
+  "@advancedOptionsTitle": {},
+
+  "maxUploadLabel": "Max Upload Size (MB)",
+  "@maxUploadLabel": {},
+
+  "publicRegistrationLabel": "Public Registration",
+  "@publicRegistrationLabel": {},
+
+  "publicRegistrationSubtitle": "Allow visitors to create their own accounts",
+  "@publicRegistrationSubtitle": {},
+
+  "completeSetupButton": "Complete Setup",
+  "@completeSetupButton": {},
+
+  "usernameOrEmail": "Username or Email",
+  "@usernameOrEmail": {},
+
+  "fieldRequired": "Required",
+  "@fieldRequired": {},
+
+  "signInButton": "Sign In",
+  "@signInButton": {},
+
+  "cannotReachServer": "Cannot reach server",
+  "@cannotReachServer": {},
+
+  "retryButton": "Retry",
+  "@retryButton": {},
+
+  "nextButton": "Next",
+  "@nextButton": {},
+
+  "backButton": "Back",
+  "@backButton": {},
+
+  "stepSiteLabel": "Site",
+  "@stepSiteLabel": {},
+
+  "stepAccountLabel": "Account",
+  "@stepAccountLabel": {},
+
+  "stepAdvancedLabel": "Advanced",
+  "@stepAdvancedLabel": {}
+}

@@ -3,6 +3,8 @@ import 'package:gio/gio.dart';
 import 'package:jiezi_api/jiezi_api.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
+import '../network/bearer_token_interceptor.dart';
+import '../network/token_refresh_interceptor.dart';
 import '../storage/hive_kv_store.dart';
 import '../storage/token_store.dart';
 
@@ -57,19 +59,49 @@ Future<TokenStore> tokenStorage(Ref ref) async {
 }
 
 // ────────────────────────────────────────────────────────────────────────────
-// HTTP client  (unauthenticated — used for setup / login)
+// HTTP client (single global instance shared by all API clients)
+//
+// Interceptor chain order (first registered = first called):
+//   1. TokenRefreshInterceptor  — catches 401, refreshes token pair, retries
+//   2. BearerTokenInterceptor   — injects Authorization header
+//   3. [gio internals: connect + callServer]
 // ────────────────────────────────────────────────────────────────────────────
 
 @Riverpod(keepAlive: true)
-Gio gio(Ref ref) => Gio();
+Future<Gio> httpClient(Ref ref) async {
+  final baseUrl = ref.watch(apiBaseUrlProvider);
+  final tokenStore = await ref.watch(tokenStorageProvider.future);
+
+  final gio = Gio();
+
+  // A bare AuthClient (its internal Gio has no interceptors) dedicated to
+  // token refresh calls.  Using the generated client avoids reimplementing
+  // the HTTP request and JSON parsing that AuthClient.refresh already handles.
+  final refreshAuthClient = AuthClient(
+    Gio(),
+    baseUrl: baseUrl.isEmpty ? null : baseUrl,
+  );
+
+  // TokenRefreshInterceptor must be first so it wraps the entire request.
+  gio.addInterceptor(
+    TokenRefreshInterceptor(
+      tokenStore: tokenStore,
+      authClient: refreshAuthClient,
+      gio: gio,
+    ).call,
+  );
+  gio.addInterceptor(BearerTokenInterceptor(tokenStore).call);
+
+  return gio;
+}
 
 // ────────────────────────────────────────────────────────────────────────────
 // JieziClient (root API entry point)
 // ────────────────────────────────────────────────────────────────────────────
 
 @Riverpod(keepAlive: true)
-JieziClient jieziClient(Ref ref) {
+Future<JieziClient> jieziClient(Ref ref) async {
   final baseUrl = ref.watch(apiBaseUrlProvider);
-  final gioInstance = ref.watch(gioProvider);
-  return JieziClient(gioInstance, baseUrl: baseUrl.isEmpty ? null : baseUrl);
+  final gio = await ref.watch(httpClientProvider.future);
+  return JieziClient(gio, baseUrl: baseUrl.isEmpty ? null : baseUrl);
 }

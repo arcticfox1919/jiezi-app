@@ -169,52 +169,50 @@ final class TokenStorageProvider
 
 String _$tokenStorageHash() => r'fb324cc44cec38170ad4b8e8099fc5ae55d83d06';
 
-@ProviderFor(gio)
-final gioProvider = GioProvider._();
+@ProviderFor(httpClient)
+final httpClientProvider = HttpClientProvider._();
 
-final class GioProvider extends $FunctionalProvider<Gio, Gio, Gio>
-    with $Provider<Gio> {
-  GioProvider._()
+final class HttpClientProvider
+    extends $FunctionalProvider<AsyncValue<Gio>, Gio, FutureOr<Gio>>
+    with $FutureModifier<Gio>, $FutureProvider<Gio> {
+  HttpClientProvider._()
     : super(
         from: null,
         argument: null,
         retry: null,
-        name: r'gioProvider',
+        name: r'httpClientProvider',
         isAutoDispose: false,
         dependencies: null,
         $allTransitiveDependencies: null,
       );
 
   @override
-  String debugGetCreateSourceHash() => _$gioHash();
+  String debugGetCreateSourceHash() => _$httpClientHash();
 
   @$internal
   @override
-  $ProviderElement<Gio> $createElement($ProviderPointer pointer) =>
-      $ProviderElement(pointer);
+  $FutureProviderElement<Gio> $createElement($ProviderPointer pointer) =>
+      $FutureProviderElement(pointer);
 
   @override
-  Gio create(Ref ref) {
-    return gio(ref);
-  }
-
-  /// {@macro riverpod.override_with_value}
-  Override overrideWithValue(Gio value) {
-    return $ProviderOverride(
-      origin: this,
-      providerOverride: $SyncValueProvider<Gio>(value),
-    );
+  FutureOr<Gio> create(Ref ref) {
+    return httpClient(ref);
   }
 }
 
-String _$gioHash() => r'9ef02813d2a7e321a0e58fc812266d3e45b4be0b';
+String _$httpClientHash() => r'2a6c3d23f7e54f41157cd6442902a3aea2927b8e';
 
 @ProviderFor(jieziClient)
 final jieziClientProvider = JieziClientProvider._();
 
 final class JieziClientProvider
-    extends $FunctionalProvider<JieziClient, JieziClient, JieziClient>
-    with $Provider<JieziClient> {
+    extends
+        $FunctionalProvider<
+          AsyncValue<JieziClient>,
+          JieziClient,
+          FutureOr<JieziClient>
+        >
+    with $FutureModifier<JieziClient>, $FutureProvider<JieziClient> {
   JieziClientProvider._()
     : super(
         from: null,
@@ -231,21 +229,14 @@ final class JieziClientProvider
 
   @$internal
   @override
-  $ProviderElement<JieziClient> $createElement($ProviderPointer pointer) =>
-      $ProviderElement(pointer);
+  $FutureProviderElement<JieziClient> $createElement(
+    $ProviderPointer pointer,
+  ) => $FutureProviderElement(pointer);
 
   @override
-  JieziClient create(Ref ref) {
+  FutureOr<JieziClient> create(Ref ref) {
     return jieziClient(ref);
-  }
-
-  /// {@macro riverpod.override_with_value}
-  Override overrideWithValue(JieziClient value) {
-    return $ProviderOverride(
-      origin: this,
-      providerOverride: $SyncValueProvider<JieziClient>(value),
-    );
   }
 }
 
-String _$jieziClientHash() => r'13a0785fcd92323f94f8344686903e90fbbc5bb1';
+String _$jieziClientHash() => r'e429e749248fd3deddcb7439e6ece9dda1ea73c4';

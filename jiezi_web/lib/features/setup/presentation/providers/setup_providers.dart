@@ -13,9 +13,9 @@ part 'setup_providers.g.dart';
 // ────────────────────────────────────────────────────────────────────────────
 
 @Riverpod(keepAlive: true)
-ISetupRepository setupRepository(Ref ref) {
-  final client = ref.watch(jieziClientProvider).setup;
-  return SetupRepositoryImpl(client);
+Future<ISetupRepository> setupRepository(Ref ref) async {
+  final client = await ref.watch(jieziClientProvider.future);
+  return SetupRepositoryImpl(client.setup);
 }
 
 // ────────────────────────────────────────────────────────────────────────────
@@ -27,7 +27,7 @@ ISetupRepository setupRepository(Ref ref) {
 /// Keep-alive because the router guard reads it on every navigation event.
 @Riverpod(keepAlive: true)
 Future<SetupStatus> setupStatus(Ref ref) async {
-  final repo = ref.watch(setupRepositoryProvider);
+  final repo = await ref.watch(setupRepositoryProvider.future);
   return repo.checkStatus();
 }
 
@@ -46,7 +46,7 @@ class SetupNotifier extends _$SetupNotifier {
   Future<void> complete(SetupFormData data) async {
     state = const AsyncLoading();
     state = await AsyncValue.guard(() async {
-      final repo = ref.read(setupRepositoryProvider);
+      final repo = await ref.read(setupRepositoryProvider.future);
       await repo.completeSetup(data);
       // Invalidate cached setup status so router re-checks.
       ref.invalidate(setupStatusProvider);

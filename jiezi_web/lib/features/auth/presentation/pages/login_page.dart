@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import 'package:jiezi_web/l10n/app_localizations.dart';
+
 import '../providers/auth_providers.dart';
 
 /// Login page for the admin console.
@@ -38,6 +40,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     final state = ref.watch(authProvider);
     final colorScheme = Theme.of(context).colorScheme;
     final textTheme = Theme.of(context).textTheme;
@@ -73,14 +76,14 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                 ),
                 const SizedBox(height: 16),
                 Text(
-                  'Jiezi Cloud',
+                  l10n.appName,
                   style: textTheme.headlineSmall?.copyWith(
                     fontWeight: FontWeight.bold,
                   ),
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  'Admin Console',
+                  l10n.adminConsoleTitle,
                   style: textTheme.bodyMedium?.copyWith(
                     color: colorScheme.onSurfaceVariant,
                   ),
@@ -101,13 +104,13 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                         children: [
                           TextFormField(
                             controller: _credentialCtrl,
-                            decoration: const InputDecoration(
-                              labelText: 'Username or Email',
-                              prefixIcon: Icon(Icons.person_outlined),
-                              border: OutlineInputBorder(),
+                            decoration: InputDecoration(
+                              labelText: l10n.usernameOrEmail,
+                              prefixIcon: const Icon(Icons.person_outlined),
+                              border: const OutlineInputBorder(),
                             ),
                             validator: (v) => (v == null || v.trim().isEmpty)
-                                ? 'Required'
+                                ? l10n.fieldRequired
                                 : null,
                           ),
                           const SizedBox(height: 16),
@@ -115,7 +118,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                             controller: _passwordCtrl,
                             obscureText: _obscurePassword,
                             decoration: InputDecoration(
-                              labelText: 'Password',
+                              labelText: l10n.passwordLabel,
                               prefixIcon: const Icon(Icons.lock_outlined),
                               border: const OutlineInputBorder(),
                               suffixIcon: IconButton(
@@ -130,7 +133,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                               ),
                             ),
                             validator: (v) =>
-                                (v == null || v.isEmpty) ? 'Required' : null,
+                                (v == null || v.isEmpty) ? l10n.fieldRequired : null,
                           ),
                           const SizedBox(height: 24),
                           FilledButton(
@@ -150,7 +153,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                                       color: Colors.white,
                                     ),
                                   )
-                                : const Text('Sign In'),
+                                : Text(l10n.signInButton),
                           ),
                         ],
                       ),

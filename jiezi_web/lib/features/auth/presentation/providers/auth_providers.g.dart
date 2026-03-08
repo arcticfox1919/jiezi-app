@@ -46,7 +46,7 @@ final class AuthRepositoryProvider
   }
 }
 
-String _$authRepositoryHash() => r'8cec87e8354296396d43d9d489b5bb5f2b6fc3c7';
+String _$authRepositoryHash() => r'24990b8c2596d6682f13298cf98c7d1aff320ce6';
 
 /// Provides the current [AuthState].
 ///

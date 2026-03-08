@@ -1,0 +1,27 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "jiezi_web (Chrome, local dev)",
+      "request": "launch",
+      "type": "dart",
+      "program": "lib/main.dart",
+      "args": [
+        "-d", "chrome",
+        "--web-port", "3000",
+        "--dart-define-from-file=dart-defines.local.json"
+      ]
+    },
+    {
+      "name": "jiezi_web (Chrome, release)",
+      "request": "launch",
+      "type": "dart",
+      "program": "lib/main.dart",
+      "flutterMode": "release",
+      "args": [
+        "-d", "chrome",
+        "--dart-define-from-file=dart-defines.local.json"
+      ]
+    }
+  ]
+}

@@ -54,15 +54,25 @@ class AuthRepositoryImpl implements IAuthRepository {
 
   @override
   Future<AuthState> restoreSession() async {
-    // Reads are synchronous — the Hive box is memory-resident.
     final accessToken = _storage.getAccessToken();
     final refreshToken = _storage.getRefreshToken();
     if (accessToken == null || refreshToken == null) {
       return const AuthState.unauthenticated();
     }
-    // TODO(phase-2): validate / refresh the access token before fetching /me.
-    // For now we just signal as authenticated if tokens are present.
-    return const AuthState.unauthenticated();
+    try {
+      // The AuthClient already has the Bearer interceptor injected, so
+      // /auth/me will receive the stored access token automatically.
+      final user = await _auth.me();
+      return AuthState.authenticated(
+        user: user,
+        accessToken: accessToken,
+        refreshToken: refreshToken,
+      );
+    } on Exception {
+      // Token is expired or invalid — clear storage and treat as logged out.
+      await _storage.clearTokens();
+      return const AuthState.unauthenticated();
+    }
   }
 
   // ── Private helpers ────────────────────────────────────────────────────────
