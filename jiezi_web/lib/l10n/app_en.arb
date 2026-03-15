@@ -188,5 +188,109 @@
   "@accountExistsError": {},
 
   "registerSuccessMessage": "Account created! Signing you in\u2026",
-  "@registerSuccessMessage": {}
+  "@registerSuccessMessage": {},
+
+  "filesNav": "Files",
+  "@filesNav": {},
+
+  "trashNav": "Trash",
+  "@trashNav": {},
+
+  "newFolderTitle": "New Folder",
+  "@newFolderTitle": {},
+
+  "folderNameLabel": "Folder name",
+  "@folderNameLabel": {},
+
+  "renameTitle": "Rename",
+  "@renameTitle": {},
+
+  "newNameLabel": "New name",
+  "@newNameLabel": {},
+
+  "deleteAction": "Delete",
+  "@deleteAction": {},
+
+  "restoreAction": "Restore",
+  "@restoreAction": {},
+
+  "deleteForeverAction": "Delete Forever",
+  "@deleteForeverAction": {},
+
+  "uploadAction": "Upload",
+  "@uploadAction": {},
+  "dropFilesHint": "Drop files here to upload",
+  "@dropFilesHint": {},
+
+  "downloadAction": "Download",
+  "@downloadAction": {},
+
+  "cancelButton": "Cancel",
+  "@cancelButton": {},
+
+  "createButton": "Create",
+  "@createButton": {},
+
+  "renameButton": "Rename",
+  "@renameButton": {},
+
+  "deleteConfirmTitle": "Move to Trash?",
+  "@deleteConfirmTitle": {},
+
+  "deleteConfirmBody": "You can restore this item from the Trash.",
+  "@deleteConfirmBody": {},
+
+  "permanentDeleteConfirmTitle": "Delete Forever?",
+  "@permanentDeleteConfirmTitle": {},
+
+  "permanentDeleteConfirmBody": "This action cannot be undone.",
+  "@permanentDeleteConfirmBody": {},
+
+  "emptyFolderMessage": "This folder is empty.",
+  "@emptyFolderMessage": {},
+
+  "emptyTrashMessage": "Trash is empty.",
+  "@emptyTrashMessage": {},
+
+  "profileNav": "Profile",
+  "@profileNav": {},
+
+  "storageTitle": "Storage",
+  "@storageTitle": {},
+
+  "storageUsedOf": "{used} of {total}",
+  "@storageUsedOf": {
+    "placeholders": {
+      "used": {"type": "String"},
+      "total": {"type": "String"}
+    }
+  },
+
+  "storageUsedNoQuota": "{used} used",
+  "@storageUsedNoQuota": {
+    "placeholders": {
+      "used": {"type": "String"}
+    }
+  },
+
+  "accountTitle": "Account",
+  "@accountTitle": {},
+
+  "usernameLabel": "Username",
+  "@usernameLabel": {},
+
+  "emailLabel": "Email",
+  "@emailLabel": {},
+
+  "displayNameLabel": "Display Name",
+  "@displayNameLabel": {},
+
+  "roleLabel": "Role",
+  "@roleLabel": {},
+
+  "joinedLabel": "Joined",
+  "@joinedLabel": {},
+
+  "maxUploadSubtitle": "Web browser only — native client has no size restriction",
+  "@maxUploadSubtitle": {}
 }

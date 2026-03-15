@@ -46,6 +46,8 @@ class _AdvancedStepState extends SetupStepState<AdvancedStep> {
             decoration: InputDecoration(
               labelText: l10n.maxUploadLabel,
               hintText: '100',
+              helperText: l10n.maxUploadSubtitle,
+              helperMaxLines: 2,
               prefixIcon: const Icon(Icons.upload_file_outlined),
               border: const OutlineInputBorder(),
             ),

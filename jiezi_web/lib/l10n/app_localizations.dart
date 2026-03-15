@@ -197,7 +197,7 @@ abstract class AppLocalizations {
   /// No description provided for @displayNameLabel.
   ///
   /// In en, this message translates to:
-  /// **'Nickname'**
+  /// **'Display Name'**
   String get displayNameLabel;
 
   /// No description provided for @displayNameHint.
@@ -475,6 +475,180 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Account created! Signing you in…'**
   String get registerSuccessMessage;
+
+  /// No description provided for @filesNav.
+  ///
+  /// In en, this message translates to:
+  /// **'Files'**
+  String get filesNav;
+
+  /// No description provided for @trashNav.
+  ///
+  /// In en, this message translates to:
+  /// **'Trash'**
+  String get trashNav;
+
+  /// No description provided for @newFolderTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'New Folder'**
+  String get newFolderTitle;
+
+  /// No description provided for @folderNameLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Folder name'**
+  String get folderNameLabel;
+
+  /// No description provided for @renameTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Rename'**
+  String get renameTitle;
+
+  /// No description provided for @newNameLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'New name'**
+  String get newNameLabel;
+
+  /// No description provided for @deleteAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete'**
+  String get deleteAction;
+
+  /// No description provided for @restoreAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Restore'**
+  String get restoreAction;
+
+  /// No description provided for @deleteForeverAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete Forever'**
+  String get deleteForeverAction;
+
+  /// No description provided for @uploadAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Upload'**
+  String get uploadAction;
+
+  /// No description provided for @dropFilesHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Drop files here to upload'**
+  String get dropFilesHint;
+
+  /// No description provided for @downloadAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Download'**
+  String get downloadAction;
+
+  /// No description provided for @cancelButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get cancelButton;
+
+  /// No description provided for @createButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Create'**
+  String get createButton;
+
+  /// No description provided for @renameButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Rename'**
+  String get renameButton;
+
+  /// No description provided for @deleteConfirmTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Move to Trash?'**
+  String get deleteConfirmTitle;
+
+  /// No description provided for @deleteConfirmBody.
+  ///
+  /// In en, this message translates to:
+  /// **'You can restore this item from the Trash.'**
+  String get deleteConfirmBody;
+
+  /// No description provided for @permanentDeleteConfirmTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete Forever?'**
+  String get permanentDeleteConfirmTitle;
+
+  /// No description provided for @permanentDeleteConfirmBody.
+  ///
+  /// In en, this message translates to:
+  /// **'This action cannot be undone.'**
+  String get permanentDeleteConfirmBody;
+
+  /// No description provided for @emptyFolderMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'This folder is empty.'**
+  String get emptyFolderMessage;
+
+  /// No description provided for @emptyTrashMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Trash is empty.'**
+  String get emptyTrashMessage;
+
+  /// No description provided for @profileNav.
+  ///
+  /// In en, this message translates to:
+  /// **'Profile'**
+  String get profileNav;
+
+  /// No description provided for @storageTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Storage'**
+  String get storageTitle;
+
+  /// No description provided for @storageUsedOf.
+  ///
+  /// In en, this message translates to:
+  /// **'{used} of {total}'**
+  String storageUsedOf(String used, String total);
+
+  /// No description provided for @storageUsedNoQuota.
+  ///
+  /// In en, this message translates to:
+  /// **'{used} used'**
+  String storageUsedNoQuota(String used);
+
+  /// No description provided for @accountTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Account'**
+  String get accountTitle;
+
+  /// No description provided for @roleLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Role'**
+  String get roleLabel;
+
+  /// No description provided for @joinedLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Joined'**
+  String get joinedLabel;
+
+  /// No description provided for @maxUploadSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Web browser only — native client has no size restriction'**
+  String get maxUploadSubtitle;
 }
 
 class _AppLocalizationsDelegate

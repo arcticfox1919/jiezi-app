@@ -5,6 +5,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../app/env.dart';
 import '../network/bearer_token_interceptor.dart';
+import '../network/status_code_interceptor.dart';
 import '../network/token_refresh_interceptor.dart';
 import '../storage/hive_kv_store.dart';
 import '../storage/token_store.dart';
@@ -61,10 +62,11 @@ Future<TokenStore> tokenStorage(Ref ref) async {
 // ────────────────────────────────────────────────────────────────────────────
 // HTTP client (single global instance shared by all API clients)
 //
-// Interceptor chain order (first registered = first called):
-//   1. TokenRefreshInterceptor  — catches 401, refreshes token pair, retries
-//   2. BearerTokenInterceptor   — injects Authorization header
-//   3. [gio internals: connect + callServer]
+// Interceptor chain order (first registered = outermost = last to see response):
+//   1. StatusCodeInterceptor    — throws ApiResponseException on >= 400
+//   2. TokenRefreshInterceptor  — catches 401, refreshes token pair, retries
+//   3. BearerTokenInterceptor   — injects Authorization header
+//   4. [gio internals: connect + callServer]
 // ────────────────────────────────────────────────────────────────────────────
 
 @Riverpod(keepAlive: true)
@@ -82,7 +84,11 @@ Future<Gio> httpClient(Ref ref) async {
     baseUrl: baseUrl.isEmpty ? null : baseUrl,
   );
 
-  // TokenRefreshInterceptor must be first so it wraps the entire request.
+  // StatusCodeInterceptor must be first (outermost) so it sees the final
+  // response AFTER TokenRefreshInterceptor has handled any 401 retries.
+  gio.addInterceptor(statusCodeInterceptor);
+
+  // TokenRefreshInterceptor must be second so it wraps the bearer+network calls.
   gio.addInterceptor(
     TokenRefreshInterceptor(
       tokenStore: tokenStore,
@@ -104,4 +110,22 @@ Future<JieziClient> jieziClient(Ref ref) async {
   final baseUrl = ref.watch(apiBaseUrlProvider);
   final gio = await ref.watch(httpClientProvider.future);
   return JieziClient(gio, baseUrl: baseUrl.isEmpty ? null : baseUrl);
+}
+
+// ────────────────────────────────────────────────────────────────────────────
+// Resumable upload client
+// ────────────────────────────────────────────────────────────────────────────
+
+@Riverpod(keepAlive: true)
+Future<ResumableUploadClient> resumableUploadClient(Ref ref) async {
+  final baseUrl = ref.watch(apiBaseUrlProvider);
+  final gio = await ref.watch(httpClientProvider.future);
+  return ResumableUploadClient(gio, baseUrl: baseUrl.isEmpty ? null : baseUrl);
+}
+
+@Riverpod(keepAlive: true)
+Future<DownloadClient> downloadClient(Ref ref) async {
+  final baseUrl = ref.watch(apiBaseUrlProvider);
+  final gio = await ref.watch(httpClientProvider.future);
+  return DownloadClient(gio, baseUrl: baseUrl.isEmpty ? null : baseUrl);
 }

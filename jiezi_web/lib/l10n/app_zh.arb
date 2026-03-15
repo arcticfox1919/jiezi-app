@@ -188,5 +188,109 @@
   "@accountExistsError": {},
 
   "registerSuccessMessage": "注册成功！正在登录…",
-  "@registerSuccessMessage": {}
+  "@registerSuccessMessage": {},
+
+  "filesNav": "文件",
+  "@filesNav": {},
+
+  "trashNav": "回收站",
+  "@trashNav": {},
+
+  "newFolderTitle": "新建文件夹",
+  "@newFolderTitle": {},
+
+  "folderNameLabel": "文件夹名称",
+  "@folderNameLabel": {},
+
+  "renameTitle": "重命名",
+  "@renameTitle": {},
+
+  "newNameLabel": "新名称",
+  "@newNameLabel": {},
+
+  "deleteAction": "删除",
+  "@deleteAction": {},
+
+  "restoreAction": "还原",
+  "@restoreAction": {},
+
+  "deleteForeverAction": "彻底删除",
+  "@deleteForeverAction": {},
+
+  "uploadAction": "上传",
+  "@uploadAction": {},
+  "dropFilesHint": "拖拽文件到此处上传",
+  "@dropFilesHint": {},
+
+  "downloadAction": "下载",
+  "@downloadAction": {},
+
+  "cancelButton": "取消",
+  "@cancelButton": {},
+
+  "createButton": "创建",
+  "@createButton": {},
+
+  "renameButton": "重命名",
+  "@renameButton": {},
+
+  "deleteConfirmTitle": "移入回收站？",
+  "@deleteConfirmTitle": {},
+
+  "deleteConfirmBody": "您可以从回收站恢复此项目。",
+  "@deleteConfirmBody": {},
+
+  "permanentDeleteConfirmTitle": "彻底删除？",
+  "@permanentDeleteConfirmTitle": {},
+
+  "permanentDeleteConfirmBody": "此操作不可撤销。",
+  "@permanentDeleteConfirmBody": {},
+
+  "emptyFolderMessage": "此文件夹为空。",
+  "@emptyFolderMessage": {},
+
+  "emptyTrashMessage": "回收站为空。",
+  "@emptyTrashMessage": {},
+
+  "profileNav": "个人",
+  "@profileNav": {},
+
+  "storageTitle": "存储空间",
+  "@storageTitle": {},
+
+  "storageUsedOf": "已用 {used}，共 {total}",
+  "@storageUsedOf": {
+    "placeholders": {
+      "used": {"type": "String"},
+      "total": {"type": "String"}
+    }
+  },
+
+  "storageUsedNoQuota": "已用 {used}",
+  "@storageUsedNoQuota": {
+    "placeholders": {
+      "used": {"type": "String"}
+    }
+  },
+
+  "accountTitle": "账号",
+  "@accountTitle": {},
+
+  "usernameLabel": "用户名",
+  "@usernameLabel": {},
+
+  "emailLabel": "邮筱",
+  "@emailLabel": {},
+
+  "displayNameLabel": "显示名称",
+  "@displayNameLabel": {},
+
+  "roleLabel": "角色",
+  "@roleLabel": {},
+
+  "joinedLabel": "注册时间",
+  "@joinedLabel": {},
+
+  "maxUploadSubtitle": "仅限制浏览器端上传，原生客户端没有大小限制",
+  "@maxUploadSubtitle": {}
 }

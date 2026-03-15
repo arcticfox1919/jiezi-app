@@ -1,5 +1,6 @@
 import 'package:jiezi_api/jiezi_api.dart';
 
+import '../../../core/error/api_response_exception.dart';
 import '../../../core/error/app_error.dart';
 import '../../../core/storage/token_store.dart';
 import '../domain/models/auth_state.dart';
@@ -110,19 +111,20 @@ class AuthRepositoryImpl implements IAuthRepository {
   // ── Private helpers ────────────────────────────────────────────────────────
 
   AppError _mapException(Exception e) {
+    if (e is ApiResponseException) {
+      if (e.statusCode == 401) return const UnauthorizedError();
+      return ServerError(
+        statusCode: e.statusCode,
+        errorCode: e.errorCode,
+        message: e.message,
+      );
+    }
     final msg = e.toString();
-    final codeMatch = RegExp(r'(\d{3})').firstMatch(msg);
-    if (codeMatch != null) {
-      final code = int.tryParse(codeMatch.group(1) ?? '') ?? 0;
-      if (code == 401) return const UnauthorizedError();
-      return ServerError(statusCode: code, message: _friendlyMessage(code));
+    if (msg.toLowerCase().contains('socket') ||
+        msg.toLowerCase().contains('connection refused') ||
+        msg.toLowerCase().contains('network is unreachable')) {
+      return const NetworkError();
     }
     return UnknownError(message: msg);
   }
-
-  String _friendlyMessage(int code) => switch (code) {
-    401 => 'Invalid credentials.',
-    403 => 'Account locked or inactive.',
-    _ => 'Login failed (status $code).',
-  };
 }

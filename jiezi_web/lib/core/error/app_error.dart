@@ -15,9 +15,19 @@ sealed class AppError implements Exception {
 
 /// The server returned an HTTP error response (4xx / 5xx).
 final class ServerError extends AppError {
-  const ServerError({required this.statusCode, required super.message});
+  const ServerError({
+    required this.statusCode,
+    this.errorCode,
+    required super.message,
+  });
 
   final int statusCode;
+
+  /// Machine-readable error identifier from the server (e.g. `"NOT_FOUND"`).
+  ///
+  /// `null` when the response body was not a valid JSON error envelope or the
+  /// server did not include the `"error"` field.
+  final String? errorCode;
 
   /// Whether the caller should retry the request.
   bool get isRetryable => statusCode >= 500;

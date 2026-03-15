@@ -58,7 +58,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get usernameFormat => '3–50 chars: letters, numbers, _ or -';
 
   @override
-  String get displayNameLabel => 'Nickname';
+  String get displayNameLabel => 'Display Name';
 
   @override
   String get displayNameHint => 'System Administrator';
@@ -208,4 +208,96 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get registerSuccessMessage => 'Account created! Signing you in…';
+
+  @override
+  String get filesNav => 'Files';
+
+  @override
+  String get trashNav => 'Trash';
+
+  @override
+  String get newFolderTitle => 'New Folder';
+
+  @override
+  String get folderNameLabel => 'Folder name';
+
+  @override
+  String get renameTitle => 'Rename';
+
+  @override
+  String get newNameLabel => 'New name';
+
+  @override
+  String get deleteAction => 'Delete';
+
+  @override
+  String get restoreAction => 'Restore';
+
+  @override
+  String get deleteForeverAction => 'Delete Forever';
+
+  @override
+  String get uploadAction => 'Upload';
+
+  @override
+  String get dropFilesHint => 'Drop files here to upload';
+
+  @override
+  String get downloadAction => 'Download';
+
+  @override
+  String get cancelButton => 'Cancel';
+
+  @override
+  String get createButton => 'Create';
+
+  @override
+  String get renameButton => 'Rename';
+
+  @override
+  String get deleteConfirmTitle => 'Move to Trash?';
+
+  @override
+  String get deleteConfirmBody => 'You can restore this item from the Trash.';
+
+  @override
+  String get permanentDeleteConfirmTitle => 'Delete Forever?';
+
+  @override
+  String get permanentDeleteConfirmBody => 'This action cannot be undone.';
+
+  @override
+  String get emptyFolderMessage => 'This folder is empty.';
+
+  @override
+  String get emptyTrashMessage => 'Trash is empty.';
+
+  @override
+  String get profileNav => 'Profile';
+
+  @override
+  String get storageTitle => 'Storage';
+
+  @override
+  String storageUsedOf(String used, String total) {
+    return '$used of $total';
+  }
+
+  @override
+  String storageUsedNoQuota(String used) {
+    return '$used used';
+  }
+
+  @override
+  String get accountTitle => 'Account';
+
+  @override
+  String get roleLabel => 'Role';
+
+  @override
+  String get joinedLabel => 'Joined';
+
+  @override
+  String get maxUploadSubtitle =>
+      'Web browser only — native client has no size restriction';
 }

@@ -76,7 +76,7 @@ final class ApiBaseUrlProvider
   }
 }
 
-String _$apiBaseUrlHash() => r'8351588cbdf03f1e08dc6ac707fdce35b6d9df57';
+String _$apiBaseUrlHash() => r'b64aed5dfae0913bcc463501afc102455839077f';
 
 /// Pre-opened Hive box for auth tokens.
 ///
@@ -200,7 +200,7 @@ final class HttpClientProvider
   }
 }
 
-String _$httpClientHash() => r'ad45646f9c0521a70ec8b5c3ba6a3070c7425231';
+String _$httpClientHash() => r'0406c55c26eb20109967731e996fa5f804c91bd1';
 
 @ProviderFor(jieziClient)
 final jieziClientProvider = JieziClientProvider._();
@@ -240,3 +240,84 @@ final class JieziClientProvider
 }
 
 String _$jieziClientHash() => r'e429e749248fd3deddcb7439e6ece9dda1ea73c4';
+
+@ProviderFor(resumableUploadClient)
+final resumableUploadClientProvider = ResumableUploadClientProvider._();
+
+final class ResumableUploadClientProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<ResumableUploadClient>,
+          ResumableUploadClient,
+          FutureOr<ResumableUploadClient>
+        >
+    with
+        $FutureModifier<ResumableUploadClient>,
+        $FutureProvider<ResumableUploadClient> {
+  ResumableUploadClientProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'resumableUploadClientProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$resumableUploadClientHash();
+
+  @$internal
+  @override
+  $FutureProviderElement<ResumableUploadClient> $createElement(
+    $ProviderPointer pointer,
+  ) => $FutureProviderElement(pointer);
+
+  @override
+  FutureOr<ResumableUploadClient> create(Ref ref) {
+    return resumableUploadClient(ref);
+  }
+}
+
+String _$resumableUploadClientHash() =>
+    r'c0718afbc389f613a523d4c723d23d4957fdf121';
+
+@ProviderFor(downloadClient)
+final downloadClientProvider = DownloadClientProvider._();
+
+final class DownloadClientProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<DownloadClient>,
+          DownloadClient,
+          FutureOr<DownloadClient>
+        >
+    with $FutureModifier<DownloadClient>, $FutureProvider<DownloadClient> {
+  DownloadClientProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'downloadClientProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$downloadClientHash();
+
+  @$internal
+  @override
+  $FutureProviderElement<DownloadClient> $createElement(
+    $ProviderPointer pointer,
+  ) => $FutureProviderElement(pointer);
+
+  @override
+  FutureOr<DownloadClient> create(Ref ref) {
+    return downloadClient(ref);
+  }
+}
+
+String _$downloadClientHash() => r'de5f6ce7e3a353ca5f05dfbbe0fb75286cea2718';

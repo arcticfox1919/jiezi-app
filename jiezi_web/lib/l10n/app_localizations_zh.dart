@@ -57,7 +57,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get usernameFormat => '3—50 个字符：字母、数字、_ 或 -';
 
   @override
-  String get displayNameLabel => '昵称';
+  String get displayNameLabel => '显示名称';
 
   @override
   String get displayNameHint => '系统管理员';
@@ -83,7 +83,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get adminAccountNote => '您正在创建超级管理员账号。该账号拥有服务器的完整控制权，且不可删除。';
 
   @override
-  String get emailLabel => '邮箱';
+  String get emailLabel => '邮筱';
 
   @override
   String get emailHint => 'admin@example.com';
@@ -198,4 +198,95 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get registerSuccessMessage => '注册成功！正在登录…';
+
+  @override
+  String get filesNav => '文件';
+
+  @override
+  String get trashNav => '回收站';
+
+  @override
+  String get newFolderTitle => '新建文件夹';
+
+  @override
+  String get folderNameLabel => '文件夹名称';
+
+  @override
+  String get renameTitle => '重命名';
+
+  @override
+  String get newNameLabel => '新名称';
+
+  @override
+  String get deleteAction => '删除';
+
+  @override
+  String get restoreAction => '还原';
+
+  @override
+  String get deleteForeverAction => '彻底删除';
+
+  @override
+  String get uploadAction => '上传';
+
+  @override
+  String get dropFilesHint => '拖拽文件到此处上传';
+
+  @override
+  String get downloadAction => '下载';
+
+  @override
+  String get cancelButton => '取消';
+
+  @override
+  String get createButton => '创建';
+
+  @override
+  String get renameButton => '重命名';
+
+  @override
+  String get deleteConfirmTitle => '移入回收站？';
+
+  @override
+  String get deleteConfirmBody => '您可以从回收站恢复此项目。';
+
+  @override
+  String get permanentDeleteConfirmTitle => '彻底删除？';
+
+  @override
+  String get permanentDeleteConfirmBody => '此操作不可撤销。';
+
+  @override
+  String get emptyFolderMessage => '此文件夹为空。';
+
+  @override
+  String get emptyTrashMessage => '回收站为空。';
+
+  @override
+  String get profileNav => '个人';
+
+  @override
+  String get storageTitle => '存储空间';
+
+  @override
+  String storageUsedOf(String used, String total) {
+    return '已用 $used，共 $total';
+  }
+
+  @override
+  String storageUsedNoQuota(String used) {
+    return '已用 $used';
+  }
+
+  @override
+  String get accountTitle => '账号';
+
+  @override
+  String get roleLabel => '角色';
+
+  @override
+  String get joinedLabel => '注册时间';
+
+  @override
+  String get maxUploadSubtitle => '仅限制浏览器端上传，原生客户端没有大小限制';
 }

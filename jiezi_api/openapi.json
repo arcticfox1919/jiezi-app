@@ -1,2115 +1,2170 @@
 {
-    "openapi": "3.1.0",
-    "info": {
-        "title": "Jiezi Cloud API",
-        "description": "Jiezi Cloud document management system REST API",
-        "license": {
-            "name": ""
-        },
-        "version": "0.1.0"
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Jiezi Cloud API",
+    "description": "Jiezi Cloud document management system REST API",
+    "license": {
+      "name": ""
     },
-    "paths": {
-        "/api/v1/admin/users": {
-            "get": {
-                "tags": [
-                    "admin"
-                ],
-                "summary": "`GET /admin/users?page=1&per_page=20`",
-                "description": "Returns a paginated list of all users.\nRequires `Admin` or `Owner`.",
-                "operationId": "list_users",
-                "parameters": [
-                    {
-                        "name": "page",
-                        "in": "query",
-                        "description": "Page number",
-                        "required": false,
-                        "schema": {
-                            "type": "integer",
-                            "format": "int32",
-                            "minimum": 0
-                        }
-                    },
-                    {
-                        "name": "per_page",
-                        "in": "query",
-                        "description": "Items per page",
-                        "required": false,
-                        "schema": {
-                            "type": "integer",
-                            "format": "int32",
-                            "minimum": 0
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Paginated user list",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "array",
-                                    "items": {
-                                        "$ref": "#/components/schemas/User"
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    "403": {
-                        "description": "Forbidden"
-                    }
-                },
-                "security": [
-                    {
-                        "bearer_auth": []
-                    }
-                ]
+    "version": "0.1.0"
+  },
+  "paths": {
+    "/api/v1/admin/users": {
+      "get": {
+        "tags": [
+          "admin"
+        ],
+        "summary": "`GET /admin/users?page=1&per_page=20`",
+        "description": "Returns a paginated list of all users.\nRequires `Admin` or `Owner`.",
+        "operationId": "list_users",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Page number",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "minimum": 0
             }
-        },
-        "/api/v1/admin/users/{id}": {
-            "get": {
-                "tags": [
-                    "admin"
-                ],
-                "summary": "`GET /admin/users/{id}`",
-                "description": "Returns the full user record for the given ID.\nRequires `Admin` or `Owner`.",
-                "operationId": "get_user",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "description": "User ID",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "User record",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/User"
-                                }
-                            }
-                        }
-                    },
-                    "403": {
-                        "description": "Forbidden"
-                    },
-                    "404": {
-                        "description": "Not found"
-                    }
-                },
-                "security": [
-                    {
-                        "bearer_auth": []
-                    }
-                ]
-            },
-            "delete": {
-                "tags": [
-                    "admin"
-                ],
-                "summary": "`DELETE /admin/users/{id}`",
-                "description": "Permanently delete a user account and revoke all their sessions.\nRequires `Owner`.  Cannot delete the last owner account.",
-                "operationId": "delete_user",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "description": "User ID",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ],
-                "responses": {
-                    "204": {
-                        "description": "User deleted"
-                    },
-                    "403": {
-                        "description": "Forbidden — requires Owner role"
-                    }
-                },
-                "security": [
-                    {
-                        "bearer_auth": []
-                    }
-                ]
+          },
+          {
+            "name": "per_page",
+            "in": "query",
+            "description": "Items per page",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "minimum": 0
             }
-        },
-        "/api/v1/admin/users/{id}/quota": {
-            "patch": {
-                "tags": [
-                    "admin"
-                ],
-                "summary": "`PATCH /admin/users/{id}/quota`",
-                "description": "Set or clear a user's storage quota.\nRequires `Owner` (only the owner controls quotas).",
-                "operationId": "set_quota",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "description": "User ID",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ],
-                "requestBody": {
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/SetQuotaRequest"
-                            }
-                        }
-                    },
-                    "required": true
-                },
-                "responses": {
-                    "204": {
-                        "description": "Quota updated"
-                    },
-                    "403": {
-                        "description": "Forbidden — requires Owner role"
-                    }
-                },
-                "security": [
-                    {
-                        "bearer_auth": []
-                    }
-                ]
-            }
-        },
-        "/api/v1/admin/users/{id}/reset-password": {
-            "post": {
-                "tags": [
-                    "admin"
-                ],
-                "summary": "`POST /admin/users/{id}/reset-password`",
-                "description": "Force-reset a user's password without knowing their current one.\nRequires `Admin` or `Owner`.",
-                "operationId": "reset_password",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "description": "User ID",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ],
-                "requestBody": {
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/AdminResetPasswordRequest"
-                            }
-                        }
-                    },
-                    "required": true
-                },
-                "responses": {
-                    "204": {
-                        "description": "Password reset"
-                    },
-                    "403": {
-                        "description": "Forbidden"
-                    }
-                },
-                "security": [
-                    {
-                        "bearer_auth": []
-                    }
-                ]
-            }
-        },
-        "/api/v1/admin/users/{id}/role": {
-            "patch": {
-                "tags": [
-                    "admin"
-                ],
-                "summary": "`PATCH /admin/users/{id}/role`",
-                "description": "Change the system-level role of a user.\n\nAuthorization rules (enforced by the service layer):\n- Owner may grant any role.\n- Admin may only promote/demote between `Member` and `Guest`.\n- Nobody may change their own role.",
-                "operationId": "change_role",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "description": "User ID",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ],
-                "requestBody": {
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/ChangeRoleRequest"
-                            }
-                        }
-                    },
-                    "required": true
-                },
-                "responses": {
-                    "200": {
-                        "description": "Role updated",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/User"
-                                }
-                            }
-                        }
-                    },
-                    "403": {
-                        "description": "Forbidden"
-                    }
-                },
-                "security": [
-                    {
-                        "bearer_auth": []
-                    }
-                ]
-            }
-        },
-        "/api/v1/admin/users/{id}/status": {
-            "patch": {
-                "tags": [
-                    "admin"
-                ],
-                "summary": "`PATCH /admin/users/{id}/status`",
-                "description": "Suspend (`is_active: false`) or reactivate (`is_active: true`) a user.\nAdmin cannot suspend an Owner.",
-                "operationId": "set_status",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "description": "User ID",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ],
-                "requestBody": {
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/SetActiveRequest"
-                            }
-                        }
-                    },
-                    "required": true
-                },
-                "responses": {
-                    "204": {
-                        "description": "Status updated"
-                    },
-                    "403": {
-                        "description": "Forbidden"
-                    }
-                },
-                "security": [
-                    {
-                        "bearer_auth": []
-                    }
-                ]
-            }
-        },
-        "/api/v1/auth/forgot-password": {
-            "post": {
-                "tags": [
-                    "auth"
-                ],
-                "summary": "`POST /auth/forgot-password` — email a password-reset OTP.",
-                "description": "Always returns `204 No Content` (even if the email is not registered)\nto prevent email enumeration.",
-                "operationId": "forgot_password",
-                "requestBody": {
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/SendOtpRequest"
-                            }
-                        }
-                    },
-                    "required": true
-                },
-                "responses": {
-                    "204": {
-                        "description": "Password reset OTP sent (always 204 to prevent email enumeration)"
-                    }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Paginated user list",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/User"
+                  }
                 }
+              }
             }
+          },
+          "403": {
+            "description": "Forbidden"
+          }
         },
-        "/api/v1/auth/login": {
-            "post": {
-                "tags": [
-                    "auth"
-                ],
-                "summary": "`POST /auth/login` — authenticate with credentials.",
-                "description": "Returns `200 OK` with a [`TokenPair`] on success.",
-                "operationId": "login",
-                "requestBody": {
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/LoginRequest"
-                            }
-                        }
-                    },
-                    "required": true
-                },
-                "responses": {
-                    "200": {
-                        "description": "Login successful",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/TokenPair"
-                                }
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "Invalid credentials"
-                    },
-                    "423": {
-                        "description": "Account locked"
-                    }
-                }
-            }
-        },
-        "/api/v1/auth/logout": {
-            "post": {
-                "tags": [
-                    "auth"
-                ],
-                "summary": "`POST /auth/logout` — revoke a refresh token (log out a device).",
-                "operationId": "logout",
-                "requestBody": {
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/LogoutBody"
-                            }
-                        }
-                    },
-                    "required": true
-                },
-                "responses": {
-                    "204": {
-                        "description": "Logged out"
-                    }
-                }
-            }
-        },
-        "/api/v1/auth/me": {
-            "get": {
-                "tags": [
-                    "auth"
-                ],
-                "summary": "`GET /auth/me` — return the current user's full profile.",
-                "operationId": "me",
-                "responses": {
-                    "200": {
-                        "description": "Current user profile",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/User"
-                                }
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized"
-                    }
-                },
-                "security": [
-                    {
-                        "bearer_auth": []
-                    }
-                ]
-            },
-            "patch": {
-                "tags": [
-                    "auth"
-                ],
-                "summary": "`PATCH /auth/me` — update the current user's display name and / or avatar.",
-                "description": "Only the fields present in the request body are updated.  Omit a field\nentirely to leave it unchanged; set it to `null` to clear it.",
-                "operationId": "update_me",
-                "requestBody": {
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/UpdateProfileRequest"
-                            }
-                        }
-                    },
-                    "required": true
-                },
-                "responses": {
-                    "200": {
-                        "description": "Profile updated",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/User"
-                                }
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized"
-                    }
-                },
-                "security": [
-                    {
-                        "bearer_auth": []
-                    }
-                ]
-            }
-        },
-        "/api/v1/auth/me/password": {
-            "post": {
-                "tags": [
-                    "auth"
-                ],
-                "summary": "`POST /auth/me/password` — change the current user's own password.",
-                "description": "Requires the caller to supply their **current** password in `old_password`.\nFor admin-initiated forced resets see `POST /admin/users/{id}/reset-password`.",
-                "operationId": "change_password",
-                "requestBody": {
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/ChangeOwnPasswordRequest"
-                            }
-                        }
-                    },
-                    "required": true
-                },
-                "responses": {
-                    "204": {
-                        "description": "Password changed"
-                    },
-                    "401": {
-                        "description": "Unauthorized or wrong current password"
-                    }
-                },
-                "security": [
-                    {
-                        "bearer_auth": []
-                    }
-                ]
-            }
-        },
-        "/api/v1/auth/me/send-change-password-otp": {
-            "post": {
-                "tags": [
-                    "auth"
-                ],
-                "summary": "`POST /auth/me/send-change-password-otp` — send OTP to own email before changing password.",
-                "description": "No-op (204) when email verification is disabled in config.",
-                "operationId": "send_change_password_otp",
-                "responses": {
-                    "204": {
-                        "description": "OTP sent (or no-op if email verification is disabled)"
-                    },
-                    "401": {
-                        "description": "Unauthorized"
-                    }
-                },
-                "security": [
-                    {
-                        "bearer_auth": []
-                    }
-                ]
-            }
-        },
-        "/api/v1/auth/refresh": {
-            "post": {
-                "tags": [
-                    "auth"
-                ],
-                "summary": "`POST /auth/refresh` — exchange a refresh token for a new pair (rotation).",
-                "operationId": "refresh",
-                "requestBody": {
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/RefreshBody"
-                            }
-                        }
-                    },
-                    "required": true
-                },
-                "responses": {
-                    "200": {
-                        "description": "Token refreshed",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/TokenPair"
-                                }
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "Invalid or expired refresh token"
-                    }
-                }
-            }
-        },
-        "/api/v1/auth/register": {
-            "post": {
-                "tags": [
-                    "auth"
-                ],
-                "summary": "`POST /auth/register` — create a new account.",
-                "description": "Returns `201 Created` with the [`User`] object on success.",
-                "operationId": "register",
-                "requestBody": {
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/RegisterRequest"
-                            }
-                        }
-                    },
-                    "required": true
-                },
-                "responses": {
-                    "201": {
-                        "description": "User registered successfully",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/User"
-                                }
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "Validation error"
-                    },
-                    "409": {
-                        "description": "Username or email already taken"
-                    }
-                }
-            }
-        },
-        "/api/v1/auth/reset-password": {
-            "post": {
-                "tags": [
-                    "auth"
-                ],
-                "summary": "`POST /auth/reset-password` — set a new password using the OTP.",
-                "description": "Returns `204 No Content` on success.",
-                "operationId": "reset_password",
-                "requestBody": {
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/ResetPasswordWithOtpRequest"
-                            }
-                        }
-                    },
-                    "required": true
-                },
-                "responses": {
-                    "204": {
-                        "description": "Password reset successful"
-                    },
-                    "400": {
-                        "description": "Invalid OTP or expired"
-                    }
-                }
-            }
-        },
-        "/api/v1/auth/send-register-otp": {
-            "post": {
-                "tags": [
-                    "auth"
-                ],
-                "summary": "`POST /auth/send-register-otp` — email a 6-digit code before registration.",
-                "description": "The client should call this before `POST /auth/register` when\n`email.verification_required = true`.  Returns `204 No Content`.",
-                "operationId": "send_register_otp",
-                "requestBody": {
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/SendOtpRequest"
-                            }
-                        }
-                    },
-                    "required": true
-                },
-                "responses": {
-                    "204": {
-                        "description": "OTP sent"
-                    }
-                }
-            }
-        },
-        "/api/v1/auth/send-unlock-otp": {
-            "post": {
-                "tags": [
-                    "auth"
-                ],
-                "summary": "`POST /auth/send-unlock-otp` — email an unlock OTP for a locked account.",
-                "description": "Returns `204 No Content` always (prevents enumeration).",
-                "operationId": "send_unlock_otp",
-                "requestBody": {
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/SendOtpRequest"
-                            }
-                        }
-                    },
-                    "required": true
-                },
-                "responses": {
-                    "204": {
-                        "description": "Unlock OTP sent (always 204 to prevent enumeration)"
-                    }
-                }
-            }
-        },
-        "/api/v1/auth/sessions": {
-            "get": {
-                "tags": [
-                    "auth"
-                ],
-                "summary": "`GET /auth/sessions` — list all active sessions for the current user.",
-                "operationId": "list_sessions",
-                "responses": {
-                    "200": {
-                        "description": "Active sessions",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "array",
-                                    "items": {
-                                        "$ref": "#/components/schemas/SessionInfo"
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized"
-                    }
-                },
-                "security": [
-                    {
-                        "bearer_auth": []
-                    }
-                ]
-            }
-        },
-        "/api/v1/auth/sessions/{family}": {
-            "delete": {
-                "tags": [
-                    "auth"
-                ],
-                "summary": "`DELETE /auth/sessions/{family}` — revoke a single device session.",
-                "operationId": "revoke_session",
-                "parameters": [
-                    {
-                        "name": "family",
-                        "in": "path",
-                        "description": "Session family UUID to revoke",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ],
-                "responses": {
-                    "204": {
-                        "description": "Session revoked"
-                    },
-                    "401": {
-                        "description": "Unauthorized"
-                    },
-                    "404": {
-                        "description": "Session not found"
-                    }
-                },
-                "security": [
-                    {
-                        "bearer_auth": []
-                    }
-                ]
-            }
-        },
-        "/api/v1/auth/unlock-account": {
-            "post": {
-                "tags": [
-                    "auth"
-                ],
-                "summary": "`POST /auth/unlock-account` — clear the lockout using the OTP.",
-                "description": "Returns `204 No Content` on success.",
-                "operationId": "unlock_account",
-                "requestBody": {
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/UnlockWithOtpRequest"
-                            }
-                        }
-                    },
-                    "required": true
-                },
-                "responses": {
-                    "204": {
-                        "description": "Account unlocked"
-                    },
-                    "400": {
-                        "description": "Invalid OTP or expired"
-                    }
-                }
-            }
-        },
-        "/api/v1/download/{id}": {
-            "get": {
-                "tags": [
-                    "files"
-                ],
-                "summary": "`GET /download/{id}` — download file content.",
-                "description": "Supports the `Range` header for partial content delivery (HTTP 206).\nFull files are returned with `200 OK`.\n\n### Routing before I/O\n\nThe total file size is resolved from the VFS metadata first.  If the\nresolved size exceeds the applicable per-client/per-mode limit, a\nstructured error is returned before any bytes are read from storage:\n- Native client, size >= `large_file_threshold` → `426` (use QUIC).\n- Web client, size > web limit → `413` (install native client).",
-                "operationId": "download_file",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "description": "File node ID",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Full file content",
-                        "content": {
-                            "application/octet-stream": {}
-                        }
-                    },
-                    "206": {
-                        "description": "Partial content (Range request)"
-                    },
-                    "404": {
-                        "description": "Not found"
-                    },
-                    "413": {
-                        "description": "File too large for web download"
-                    },
-                    "426": {
-                        "description": "Use QUIC for large files (native client)"
-                    }
-                },
-                "security": [
-                    {
-                        "bearer_auth": []
-                    }
-                ]
-            }
-        },
-        "/api/v1/files/directory": {
-            "post": {
-                "tags": [
-                    "files"
-                ],
-                "summary": "`POST /files/directory` — create a new subdirectory.",
-                "operationId": "create_directory",
-                "requestBody": {
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/CreateDirectoryBody"
-                            }
-                        }
-                    },
-                    "required": true
-                },
-                "responses": {
-                    "201": {
-                        "description": "Directory created",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/FileNode"
-                                }
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "Validation error"
-                    },
-                    "404": {
-                        "description": "Parent not found"
-                    }
-                },
-                "security": [
-                    {
-                        "bearer_auth": []
-                    }
-                ]
-            }
-        },
-        "/api/v1/files/trash": {
-            "get": {
-                "tags": [
-                    "files"
-                ],
-                "summary": "`GET /files/trash` — list all soft-deleted nodes owned by the caller.",
-                "operationId": "list_trash",
-                "responses": {
-                    "200": {
-                        "description": "Trash contents",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "array",
-                                    "items": {
-                                        "$ref": "#/components/schemas/FileNode"
-                                    }
-                                }
-                            }
-                        }
-                    }
-                },
-                "security": [
-                    {
-                        "bearer_auth": []
-                    }
-                ]
-            }
-        },
-        "/api/v1/files/{id}": {
-            "get": {
-                "tags": [
-                    "files"
-                ],
-                "summary": "`GET /files/{id}` — fetch a single node.",
-                "operationId": "get_node",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "description": "File/directory node ID",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Node metadata",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/FileNode"
-                                }
-                            }
-                        }
-                    },
-                    "404": {
-                        "description": "Not found"
-                    }
-                },
-                "security": [
-                    {
-                        "bearer_auth": []
-                    }
-                ]
-            },
-            "delete": {
-                "tags": [
-                    "files"
-                ],
-                "summary": "`DELETE /files/{id}` — soft-delete (move to trash).",
-                "operationId": "soft_delete",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "description": "Node ID",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ],
-                "responses": {
-                    "204": {
-                        "description": "Moved to trash"
-                    },
-                    "404": {
-                        "description": "Not found"
-                    }
-                },
-                "security": [
-                    {
-                        "bearer_auth": []
-                    }
-                ]
-            }
-        },
-        "/api/v1/files/{id}/children": {
-            "get": {
-                "tags": [
-                    "files"
-                ],
-                "summary": "`GET /files/{id}/children?page=1&per_page=20` — list a directory's contents.",
-                "operationId": "list_children",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "description": "Directory node ID",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "page",
-                        "in": "query",
-                        "description": "Page number (1-based)",
-                        "required": false,
-                        "schema": {
-                            "type": "integer",
-                            "format": "int32",
-                            "minimum": 0
-                        }
-                    },
-                    {
-                        "name": "per_page",
-                        "in": "query",
-                        "description": "Items per page",
-                        "required": false,
-                        "schema": {
-                            "type": "integer",
-                            "format": "int32",
-                            "minimum": 0
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Directory listing",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "array",
-                                    "items": {
-                                        "$ref": "#/components/schemas/FileNode"
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    "404": {
-                        "description": "Not found"
-                    }
-                },
-                "security": [
-                    {
-                        "bearer_auth": []
-                    }
-                ]
-            }
-        },
-        "/api/v1/files/{id}/copy": {
-            "post": {
-                "tags": [
-                    "files"
-                ],
-                "summary": "`POST /files/{id}/copy` — copy a node (and subtree) under a new parent.",
-                "description": "Returns the root of the copied subtree with a new ID.",
-                "operationId": "copy_node",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "description": "Node ID",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ],
-                "requestBody": {
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/CopyBody"
-                            }
-                        }
-                    },
-                    "required": true
-                },
-                "responses": {
-                    "201": {
-                        "description": "Copy created",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/FileNode"
-                                }
-                            }
-                        }
-                    },
-                    "404": {
-                        "description": "Not found"
-                    }
-                },
-                "security": [
-                    {
-                        "bearer_auth": []
-                    }
-                ]
-            }
-        },
-        "/api/v1/files/{id}/move": {
-            "post": {
-                "tags": [
-                    "files"
-                ],
-                "summary": "`POST /files/{id}/move` — move a node to a different parent.",
-                "operationId": "move_node",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "description": "Node ID",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ],
-                "requestBody": {
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/MoveBody"
-                            }
-                        }
-                    },
-                    "required": true
-                },
-                "responses": {
-                    "200": {
-                        "description": "Node moved",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/FileNode"
-                                }
-                            }
-                        }
-                    },
-                    "404": {
-                        "description": "Not found"
-                    }
-                },
-                "security": [
-                    {
-                        "bearer_auth": []
-                    }
-                ]
-            }
-        },
-        "/api/v1/files/{id}/name": {
-            "put": {
-                "tags": [
-                    "files"
-                ],
-                "summary": "`PUT /files/{id}/name` — rename a node.",
-                "operationId": "rename",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "description": "Node ID",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ],
-                "requestBody": {
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/RenameBody"
-                            }
-                        }
-                    },
-                    "required": true
-                },
-                "responses": {
-                    "200": {
-                        "description": "Node renamed",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/FileNode"
-                                }
-                            }
-                        }
-                    },
-                    "404": {
-                        "description": "Not found"
-                    }
-                },
-                "security": [
-                    {
-                        "bearer_auth": []
-                    }
-                ]
-            }
-        },
-        "/api/v1/files/{id}/permanent": {
-            "delete": {
-                "tags": [
-                    "files"
-                ],
-                "summary": "`DELETE /files/{id}/permanent` — permanently destroy a node.",
-                "description": "Irreversible.  The node and all its descendants are removed from the\ndatabase.  Content deduplication means storage chunks are only freed\nby a separate garbage-collection pass.",
-                "operationId": "permanent_delete",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "description": "Node ID",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ],
-                "responses": {
-                    "204": {
-                        "description": "Permanently deleted"
-                    },
-                    "404": {
-                        "description": "Not found"
-                    }
-                },
-                "security": [
-                    {
-                        "bearer_auth": []
-                    }
-                ]
-            }
-        },
-        "/api/v1/files/{id}/restore": {
-            "post": {
-                "tags": [
-                    "files"
-                ],
-                "summary": "`POST /files/{id}/restore` — restore from trash.",
-                "operationId": "restore",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "description": "Node ID",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Node restored from trash",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/FileNode"
-                                }
-                            }
-                        }
-                    },
-                    "404": {
-                        "description": "Not found"
-                    }
-                },
-                "security": [
-                    {
-                        "bearer_auth": []
-                    }
-                ]
-            }
-        },
-        "/api/v1/setup/complete": {
-            "post": {
-                "tags": [
-                    "setup"
-                ],
-                "summary": "`POST /api/v1/setup/complete`",
-                "description": "Performs the first-run setup:\n1. Validates the request body.\n2. Creates the Owner account via [`AuthService::bootstrap_owner`].\n3. Persists site settings to the `system_settings` table.\n4. Marks setup as complete (DB + in-memory atomic flag).\n\nReturns `409 Conflict` if setup has already been completed.",
-                "operationId": "complete",
-                "requestBody": {
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/SetupCompleteRequest"
-                            }
-                        }
-                    },
-                    "required": true
-                },
-                "responses": {
-                    "200": {
-                        "description": "Setup completed successfully",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/SetupCompleteResponse"
-                                }
-                            }
-                        }
-                    },
-                    "409": {
-                        "description": "Setup has already been completed"
-                    }
-                }
-            }
-        },
-        "/api/v1/setup/status": {
-            "get": {
-                "tags": [
-                    "setup"
-                ],
-                "summary": "`GET /api/v1/setup/status`",
-                "description": "Returns whether the server still needs to be configured.\nSafe to call anonymously; returns no sensitive information.",
-                "operationId": "status",
-                "responses": {
-                    "200": {
-                        "description": "Setup status",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/SetupStatusResponse"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/api/v1/upload/": {
-            "post": {
-                "tags": [
-                    "files"
-                ],
-                "summary": "`POST /upload/?parent_id=…&name=…` — upload a file.",
-                "description": "Accepts the raw file bytes in the request body.  The pipeline:\n1. Receives raw bytes (Actix request body limit applies).\n2. Routes based on client type and file size:\n   - Native client, size >= `large_file_threshold` → `426 Upgrade Required` (use QUIC).\n   - Web client, size > web limit → `413 Payload Too Large` (install native client).\n3. Runs FastCDC chunking.\n4. Writes chunks to all configured storage backends (dedup-aware).\n5. Creates a `FileNode` record in the VFS under `parent_id`.\n\n### Client identification\n\nSet the `X-Jiezi-Client: native` request header to identify as the native\ndesktop / mobile client.  Absence of this header (or any other value) is\ntreated as a web-browser client.\n\nReturns the new [`FileNode`] as JSON with `201 Created`.",
-                "operationId": "upload_file",
-                "parameters": [
-                    {
-                        "name": "parent_id",
-                        "in": "query",
-                        "description": "Parent directory ID",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "name",
-                        "in": "query",
-                        "description": "Filename",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "mime_type",
-                        "in": "query",
-                        "description": "MIME type hint",
-                        "required": false,
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ],
-                "requestBody": {
-                    "content": {
-                        "application/octet-stream": {
-                            "schema": {
-                                "type": "array",
-                                "items": {
-                                    "type": "integer",
-                                    "format": "int32",
-                                    "minimum": 0
-                                }
-                            }
-                        }
-                    },
-                    "required": true
-                },
-                "responses": {
-                    "201": {
-                        "description": "File uploaded",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/FileNode"
-                                }
-                            }
-                        }
-                    },
-                    "413": {
-                        "description": "File too large for web upload"
-                    },
-                    "426": {
-                        "description": "Use QUIC for large files (native client)"
-                    }
-                },
-                "security": [
-                    {
-                        "bearer_auth": []
-                    }
-                ]
-            }
-        }
+        "security": [
+          {
+            "bearer_auth": []
+          }
+        ]
+      }
     },
-    "components": {
-        "schemas": {
-            "AdminResetPasswordRequest": {
-                "type": "object",
-                "description": "Payload for `POST /admin/users/{id}/reset-password` — admin force-reset.",
-                "required": [
-                    "new_password"
-                ],
-                "properties": {
-                    "new_password": {
-                        "type": "string",
-                        "description": "The new password to assign.  Minimum 8 characters."
-                    }
-                }
-            },
-            "ChangeOwnPasswordRequest": {
-                "type": "object",
-                "description": "Payload for `POST /auth/me/password` — change own password.",
-                "required": [
-                    "old_password",
-                    "new_password"
-                ],
-                "properties": {
-                    "email_otp": {
-                        "type": [
-                            "string",
-                            "null"
-                        ],
-                        "description": "6-digit OTP sent to the account email.  Required when\n`email_verification_required` is enabled in config."
-                    },
-                    "new_password": {
-                        "type": "string",
-                        "description": "The desired new password (minimum 8 characters)."
-                    },
-                    "old_password": {
-                        "type": "string",
-                        "description": "The caller's current password (verified before accepting the change)."
-                    }
-                }
-            },
-            "ChangeRoleRequest": {
-                "type": "object",
-                "description": "Payload for `PATCH /admin/users/{id}/role` — change a user's system role.",
-                "required": [
-                    "new_role"
-                ],
-                "properties": {
-                    "new_role": {
-                        "$ref": "#/components/schemas/Role"
-                    }
-                }
-            },
-            "CopyBody": {
-                "type": "object",
-                "description": "Body for `POST /files/{id}/copy`.",
-                "required": [
-                    "new_parent_id"
-                ],
-                "properties": {
-                    "new_parent_id": {
-                        "type": "string",
-                        "description": "ID of the destination parent directory."
-                    }
-                }
-            },
-            "CreateDirectoryBody": {
-                "type": "object",
-                "description": "Body for `POST /files/directory`.",
-                "required": [
-                    "parent_id",
-                    "name"
-                ],
-                "properties": {
-                    "name": {
-                        "type": "string",
-                        "description": "Name of the new directory."
-                    },
-                    "parent_id": {
-                        "type": "string",
-                        "description": "ID of the parent directory."
-                    }
-                }
-            },
-            "FileId": {
-                "type": "string",
-                "format": "uuid",
-                "description": "Identifies a file or directory node in the virtual file system."
-            },
-            "FileMetadata": {
-                "type": "object",
-                "description": "Extended, optional metadata attached to a file node.",
-                "properties": {
-                    "extra": {
-                        "type": "object",
-                        "description": "Arbitrary key-value pairs sourced from upload headers or EXIF data.",
-                        "additionalProperties": {},
-                        "propertyNames": {
-                            "type": "string"
-                        }
-                    },
-                    "has_thumbnail": {
-                        "type": "boolean",
-                        "description": "Whether a thumbnail has been generated for this file."
-                    },
-                    "is_indexed": {
-                        "type": "boolean",
-                        "description": "Whether the file content has been submitted to the search index."
-                    },
-                    "tags": {
-                        "type": "array",
-                        "items": {
-                            "type": "string"
-                        },
-                        "description": "User-defined tags for filtering and organisation."
-                    }
-                }
-            },
-            "FileNode": {
-                "type": "object",
-                "description": "A node in the virtual file system — either a file or a directory.\n\nFile content is stored separately by the storage backend; this struct\nholds only the metadata that lives in the database.",
-                "required": [
-                    "id",
-                    "space_id",
-                    "owner_id",
-                    "name",
-                    "node_type",
-                    "size",
-                    "created_at",
-                    "updated_at",
-                    "metadata"
-                ],
-                "properties": {
-                    "content_hash": {
-                        "type": [
-                            "string",
-                            "null"
-                        ],
-                        "description": "SHA-256 hex digest of the full file content."
-                    },
-                    "created_at": {
-                        "type": "string",
-                        "format": "date-time"
-                    },
-                    "deleted_at": {
-                        "type": [
-                            "string",
-                            "null"
-                        ],
-                        "format": "date-time",
-                        "description": "Set when the node has been soft-deleted (moved to trash)."
-                    },
-                    "id": {
-                        "$ref": "#/components/schemas/FileId"
-                    },
-                    "metadata": {
-                        "$ref": "#/components/schemas/FileMetadata"
-                    },
-                    "mime_type": {
-                        "type": [
-                            "string",
-                            "null"
-                        ],
-                        "description": "MIME type detected at upload time (e.g. `\"image/jpeg\"`)."
-                    },
-                    "name": {
-                        "type": "string"
-                    },
-                    "node_type": {
-                        "$ref": "#/components/schemas/NodeType"
-                    },
-                    "owner_id": {
-                        "$ref": "#/components/schemas/UserId"
-                    },
-                    "parent_id": {
-                        "oneOf": [
-                            {
-                                "type": "null"
-                            },
-                            {
-                                "$ref": "#/components/schemas/FileId",
-                                "description": "`None` only for the root node of a space."
-                            }
-                        ]
-                    },
-                    "size": {
-                        "type": "integer",
-                        "format": "int64",
-                        "description": "File size in bytes.  Zero for directories.",
-                        "minimum": 0
-                    },
-                    "space_id": {
-                        "$ref": "#/components/schemas/SpaceId"
-                    },
-                    "updated_at": {
-                        "type": "string",
-                        "format": "date-time"
-                    }
-                }
-            },
-            "LoginRequest": {
-                "type": "object",
-                "description": "Payload for the user login endpoint.",
-                "required": [
-                    "credential",
-                    "password"
-                ],
-                "properties": {
-                    "credential": {
-                        "type": "string",
-                        "description": "Either a username or an email address."
-                    },
-                    "device_label": {
-                        "type": [
-                            "string",
-                            "null"
-                        ],
-                        "description": "Optional human-readable label for the device initiating the login.\nShown in the active sessions list so users can identify and revoke\nspecific devices (e.g. \"iPhone 15\", \"Home PC — Firefox\")."
-                    },
-                    "password": {
-                        "type": "string"
-                    }
-                }
-            },
-            "LogoutBody": {
-                "type": "object",
-                "required": [
-                    "refresh_token"
-                ],
-                "properties": {
-                    "refresh_token": {
-                        "type": "string"
-                    }
-                }
-            },
-            "MoveBody": {
-                "type": "object",
-                "description": "Body for `POST /files/{id}/move`.",
-                "required": [
-                    "new_parent_id"
-                ],
-                "properties": {
-                    "new_parent_id": {
-                        "type": "string"
-                    }
-                }
-            },
-            "NodeType": {
-                "type": "string",
-                "description": "The kind of a virtual file system node.",
-                "enum": [
-                    "file",
-                    "directory",
-                    "symlink"
-                ]
-            },
-            "PageRequest": {
-                "type": "object",
-                "description": "Pagination parameters sent by the client in query strings or request bodies.",
-                "required": [
-                    "page",
-                    "per_page"
-                ],
-                "properties": {
-                    "page": {
-                        "type": "integer",
-                        "format": "int32",
-                        "description": "1-based page number.",
-                        "minimum": 0
-                    },
-                    "per_page": {
-                        "type": "integer",
-                        "format": "int32",
-                        "description": "Maximum number of items per page.",
-                        "minimum": 0
-                    }
-                }
-            },
-            "RefreshBody": {
-                "type": "object",
-                "required": [
-                    "refresh_token"
-                ],
-                "properties": {
-                    "refresh_token": {
-                        "type": "string"
-                    }
-                }
-            },
-            "RegisterRequest": {
-                "type": "object",
-                "description": "Payload for the user registration endpoint.",
-                "required": [
-                    "username",
-                    "email",
-                    "password"
-                ],
-                "properties": {
-                    "display_name": {
-                        "type": [
-                            "string",
-                            "null"
-                        ],
-                        "description": "Optional friendly name shown in the UI."
-                    },
-                    "email": {
-                        "type": "string"
-                    },
-                    "email_otp": {
-                        "type": [
-                            "string",
-                            "null"
-                        ],
-                        "description": "OTP code sent to `email` via `POST /auth/send-register-otp`.\n\nRequired when `email.verification_required = true` in config;\nignored (and may be absent) otherwise."
-                    },
-                    "password": {
-                        "type": "string"
-                    },
-                    "username": {
-                        "type": "string"
-                    }
-                }
-            },
-            "RenameBody": {
-                "type": "object",
-                "description": "Body for `PUT /files/{id}/name`.",
-                "required": [
-                    "new_name"
-                ],
-                "properties": {
-                    "new_name": {
-                        "type": "string"
-                    }
-                }
-            },
-            "ResetPasswordWithOtpRequest": {
-                "type": "object",
-                "description": "Payload for `POST /auth/reset-password` — reset password using an OTP code.",
-                "required": [
-                    "email",
-                    "code",
-                    "new_password"
-                ],
-                "properties": {
-                    "code": {
-                        "type": "string",
-                        "description": "The 6-digit OTP that was emailed via `POST /auth/forgot-password`."
-                    },
-                    "email": {
-                        "type": "string"
-                    },
-                    "new_password": {
-                        "type": "string"
-                    }
-                }
-            },
-            "Role": {
-                "type": "string",
-                "description": "User role — determines the base set of permissions.\nResource-level overrides can refine these defaults.",
-                "enum": [
-                    "owner",
-                    "admin",
-                    "member",
-                    "guest"
-                ]
-            },
-            "SendOtpRequest": {
-                "type": "object",
-                "description": "Payload for `POST /auth/send-register-otp` — request an OTP for registration.",
-                "required": [
-                    "email"
-                ],
-                "properties": {
-                    "email": {
-                        "type": "string",
-                        "description": "The email address to send the OTP to."
-                    }
-                }
-            },
-            "SessionInfo": {
-                "type": "object",
-                "description": "Represents a single active login session visible to the user.\n\nIdentified by its `family` UUID, which stays constant across all\nrefresh-token rotations within the same login session.",
-                "required": [
-                    "family",
-                    "session_started",
-                    "expires_at"
-                ],
-                "properties": {
-                    "device_label": {
-                        "type": [
-                            "string",
-                            "null"
-                        ],
-                        "description": "Human-readable label supplied by the client at login time."
-                    },
-                    "expires_at": {
-                        "type": "string",
-                        "format": "date-time",
-                        "description": "When the active refresh token in this session expires."
-                    },
-                    "family": {
-                        "type": "string",
-                        "description": "Stable identifier for this session (JWT rotation family UUID)."
-                    },
-                    "session_started": {
-                        "type": "string",
-                        "format": "date-time",
-                        "description": "When the session was first created (i.e., when the user logged in)."
-                    }
-                }
-            },
-            "SetActiveRequest": {
-                "type": "object",
-                "description": "Payload for `PATCH /admin/users/{id}/status` — suspend or reactivate.",
-                "required": [
-                    "is_active"
-                ],
-                "properties": {
-                    "is_active": {
-                        "type": "boolean"
-                    }
-                }
-            },
-            "SetQuotaRequest": {
-                "type": "object",
-                "description": "Payload for `PATCH /admin/users/{id}/quota` — set storage quota.",
-                "properties": {
-                    "storage_quota": {
-                        "type": [
-                            "integer",
-                            "null"
-                        ],
-                        "format": "int64",
-                        "description": "Storage maximum in bytes.  `null` means unlimited.",
-                        "minimum": 0
-                    }
-                }
-            },
-            "SetupCompleteRequest": {
-                "type": "object",
-                "description": "Request body for `POST /setup/complete`.\n\nAll fields are validated server-side.  Passwords are never stored in plain\ntext; they are hashed with Argon2id before persistence.",
-                "required": [
-                    "admin_username",
-                    "admin_email",
-                    "admin_password",
-                    "site_name"
-                ],
-                "properties": {
-                    "admin_display_name": {
-                        "type": [
-                            "string",
-                            "null"
-                        ],
-                        "description": "Optional display name shown in the UI (e.g. \"System Administrator\")."
-                    },
-                    "admin_email": {
-                        "type": "string",
-                        "description": "Email address for the super-admin account."
-                    },
-                    "admin_password": {
-                        "type": "string",
-                        "description": "Password for the super-admin account (minimum 8 characters)."
-                    },
-                    "admin_username": {
-                        "type": "string",
-                        "description": "Login username for the super-admin account (3-50 chars, alphanumeric/-/_)."
-                    },
-                    "max_upload_size_mb": {
-                        "type": "integer",
-                        "format": "int32",
-                        "description": "Maximum upload size in megabytes.",
-                        "minimum": 0
-                    },
-                    "registration_enabled": {
-                        "type": "boolean",
-                        "description": "Allow unauthenticated visitors to register new accounts.\nSet to `false` for invite-only or enterprise deployments."
-                    },
-                    "site_description": {
-                        "type": "string",
-                        "description": "Optional short description / tagline for the site."
-                    },
-                    "site_name": {
-                        "type": "string",
-                        "description": "Human-readable site name shown in the web UI and emails."
-                    }
-                }
-            },
-            "SetupCompleteResponse": {
-                "type": "object",
-                "description": "Response body for a successful `POST /setup/complete`.",
-                "required": [
-                    "success",
-                    "message"
-                ],
-                "properties": {
-                    "message": {
-                        "type": "string"
-                    },
-                    "success": {
-                        "type": "boolean"
-                    }
-                }
-            },
-            "SetupStatusResponse": {
-                "type": "object",
-                "description": "Response body for `GET /setup/status`.",
-                "required": [
-                    "setup_required",
-                    "version"
-                ],
-                "properties": {
-                    "setup_required": {
-                        "type": "boolean",
-                        "description": "When `true` the server requires setup before it can be used."
-                    },
-                    "version": {
-                        "type": "string",
-                        "description": "Jiezi Cloud server version string."
-                    }
-                }
-            },
-            "SpaceId": {
-                "type": "string",
-                "format": "uuid",
-                "description": "Identifies a collaborative space (personal or shared)."
-            },
-            "TokenPair": {
-                "type": "object",
-                "description": "A short-lived access token paired with a longer-lived refresh token.\nReturned after a successful login or token refresh.",
-                "required": [
-                    "access_token",
-                    "refresh_token",
-                    "expires_in"
-                ],
-                "properties": {
-                    "access_token": {
-                        "type": "string"
-                    },
-                    "expires_in": {
-                        "type": "integer",
-                        "format": "int64",
-                        "description": "Seconds until `access_token` expires.",
-                        "minimum": 0
-                    },
-                    "refresh_token": {
-                        "type": "string"
-                    }
-                }
-            },
-            "UnlockWithOtpRequest": {
-                "type": "object",
-                "description": "Payload for `POST /auth/unlock-account` — unlock a locked account using OTP.",
-                "required": [
-                    "email",
-                    "code"
-                ],
-                "properties": {
-                    "code": {
-                        "type": "string",
-                        "description": "The 6-digit OTP that was emailed via `POST /auth/send-unlock-otp`."
-                    },
-                    "email": {
-                        "type": "string"
-                    }
-                }
-            },
-            "UpdateProfileRequest": {
-                "type": "object",
-                "description": "Payload for updating one's own profile (display name, avatar).\n\nEach field is doubly-wrapped in `Option` so the client can distinguish\n\"omit this field\" (`None`) from \"clear this field\" (`Some(None)`).",
-                "properties": {
-                    "avatar_url": {
-                        "type": [
-                            "string",
-                            "null"
-                        ],
-                        "description": "Pass `Some(Some(\"https://…\"))` to set, `Some(None)` to clear."
-                    },
-                    "display_name": {
-                        "type": [
-                            "string",
-                            "null"
-                        ],
-                        "description": "Pass `Some(Some(\"Alice\"))` to set, `Some(None)` to clear."
-                    }
-                }
-            },
-            "UploadQuery": {
-                "type": "object",
-                "description": "Query parameters for `POST /api/v1/upload/`.",
-                "required": [
-                    "parent_id",
-                    "name"
-                ],
-                "properties": {
-                    "mime_type": {
-                        "type": [
-                            "string",
-                            "null"
-                        ],
-                        "description": "Optional MIME type hint from the client."
-                    },
-                    "name": {
-                        "type": "string",
-                        "description": "Filename to store."
-                    },
-                    "parent_id": {
-                        "type": "string",
-                        "description": "ID of the parent directory in the VFS."
-                    }
-                }
-            },
-            "User": {
-                "type": "object",
-                "description": "Core user entity.",
-                "required": [
-                    "id",
-                    "username",
-                    "email",
-                    "role",
-                    "created_at",
-                    "updated_at",
-                    "is_active",
-                    "storage_used",
-                    "email_verified"
-                ],
-                "properties": {
-                    "avatar_url": {
-                        "type": [
-                            "string",
-                            "null"
-                        ],
-                        "description": "Optional URL to the user's avatar image."
-                    },
-                    "created_at": {
-                        "type": "string",
-                        "format": "date-time"
-                    },
-                    "display_name": {
-                        "type": [
-                            "string",
-                            "null"
-                        ],
-                        "description": "Optional display name shown in the UI."
-                    },
-                    "email": {
-                        "type": "string"
-                    },
-                    "email_verified": {
-                        "type": "boolean",
-                        "description": "Whether the user has verified their email address via OTP.\n\nWhen `email.verification_required = true` in config, users must supply\nthe correct OTP code during registration before the account is confirmed."
-                    },
-                    "id": {
-                        "$ref": "#/components/schemas/UserId"
-                    },
-                    "is_active": {
-                        "type": "boolean",
-                        "description": "Whether the account is active (not suspended)."
-                    },
-                    "role": {
-                        "$ref": "#/components/schemas/Role",
-                        "description": "System-level role."
-                    },
-                    "storage_quota": {
-                        "type": [
-                            "integer",
-                            "null"
-                        ],
-                        "format": "int64",
-                        "description": "Maximum storage this user may consume across all their spaces,\nin bytes.  `None` means unlimited.",
-                        "minimum": 0
-                    },
-                    "storage_used": {
-                        "type": "integer",
-                        "format": "int64",
-                        "description": "Running total of bytes consumed.",
-                        "minimum": 0
-                    },
-                    "updated_at": {
-                        "type": "string",
-                        "format": "date-time"
-                    },
-                    "username": {
-                        "type": "string"
-                    }
-                }
-            },
-            "UserId": {
-                "type": "string",
-                "format": "uuid",
-                "description": "Identifies a user account."
+    "/api/v1/admin/users/{id}": {
+      "get": {
+        "tags": [
+          "admin"
+        ],
+        "summary": "`GET /admin/users/{id}`",
+        "description": "Returns the full user record for the given ID.\nRequires `Admin` or `Owner`.",
+        "operationId": "get_user",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "User ID",
+            "required": true,
+            "schema": {
+              "type": "string"
             }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User record",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not found"
+          }
         },
-        "securitySchemes": {
-            "bearer_auth": {
-                "type": "http",
-                "scheme": "bearer",
-                "bearerFormat": "JWT",
-                "description": "JWT access token — obtain from POST /api/v1/auth/login"
+        "security": [
+          {
+            "bearer_auth": []
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "admin"
+        ],
+        "summary": "`DELETE /admin/users/{id}`",
+        "description": "Permanently delete a user account and revoke all their sessions.\nRequires `Owner`.  Cannot delete the last owner account.",
+        "operationId": "delete_user",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "User ID",
+            "required": true,
+            "schema": {
+              "type": "string"
             }
-        }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "User deleted"
+          },
+          "403": {
+            "description": "Forbidden — requires Owner role"
+          }
+        },
+        "security": [
+          {
+            "bearer_auth": []
+          }
+        ]
+      }
     },
-    "tags": [
-        {
-            "name": "setup",
-            "description": "First-run setup wizard"
+    "/api/v1/admin/users/{id}/quota": {
+      "patch": {
+        "tags": [
+          "admin"
+        ],
+        "summary": "`PATCH /admin/users/{id}/quota`",
+        "description": "Set or clear a user's storage quota.\nRequires `Owner` (only the owner controls quotas).",
+        "operationId": "set_quota",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "User ID",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SetQuotaRequest"
+              }
+            }
+          },
+          "required": true
         },
-        {
-            "name": "auth",
-            "description": "Authentication & sessions"
+        "responses": {
+          "204": {
+            "description": "Quota updated"
+          },
+          "403": {
+            "description": "Forbidden — requires Owner role"
+          }
         },
-        {
-            "name": "files",
-            "description": "Virtual file system — nodes, upload, download"
+        "security": [
+          {
+            "bearer_auth": []
+          }
+        ]
+      }
+    },
+    "/api/v1/admin/users/{id}/reset-password": {
+      "post": {
+        "tags": [
+          "admin"
+        ],
+        "summary": "`POST /admin/users/{id}/reset-password`",
+        "description": "Force-reset a user's password without knowing their current one.\nRequires `Admin` or `Owner`.",
+        "operationId": "reset_password",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "User ID",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AdminResetPasswordRequest"
+              }
+            }
+          },
+          "required": true
         },
-        {
-            "name": "admin",
-            "description": "Administrator user management"
+        "responses": {
+          "204": {
+            "description": "Password reset"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "bearer_auth": []
+          }
+        ]
+      }
+    },
+    "/api/v1/admin/users/{id}/role": {
+      "patch": {
+        "tags": [
+          "admin"
+        ],
+        "summary": "`PATCH /admin/users/{id}/role`",
+        "description": "Change the system-level role of a user.\n\nAuthorization rules (enforced by the service layer):\n- Owner may grant any role.\n- Admin may only promote/demote between `Member` and `Guest`.\n- Nobody may change their own role.",
+        "operationId": "change_role",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "User ID",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChangeRoleRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Role updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "bearer_auth": []
+          }
+        ]
+      }
+    },
+    "/api/v1/admin/users/{id}/status": {
+      "patch": {
+        "tags": [
+          "admin"
+        ],
+        "summary": "`PATCH /admin/users/{id}/status`",
+        "description": "Suspend (`is_active: false`) or reactivate (`is_active: true`) a user.\nAdmin cannot suspend an Owner.",
+        "operationId": "set_status",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "User ID",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SetActiveRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "204": {
+            "description": "Status updated"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "bearer_auth": []
+          }
+        ]
+      }
+    },
+    "/api/v1/auth/forgot-password": {
+      "post": {
+        "tags": [
+          "auth"
+        ],
+        "summary": "`POST /auth/forgot-password` — email a password-reset OTP.",
+        "description": "Always returns `204 No Content` (even if the email is not registered)\nto prevent email enumeration.",
+        "operationId": "forgot_password",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SendOtpRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "204": {
+            "description": "Password reset OTP sent (always 204 to prevent email enumeration)"
+          }
         }
-    ]
+      }
+    },
+    "/api/v1/auth/login": {
+      "post": {
+        "tags": [
+          "auth"
+        ],
+        "summary": "`POST /auth/login` — authenticate with credentials.",
+        "description": "Returns `200 OK` with a [`TokenPair`] on success.",
+        "operationId": "login",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Login successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TokenPair"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Invalid credentials"
+          },
+          "423": {
+            "description": "Account locked"
+          }
+        }
+      }
+    },
+    "/api/v1/auth/logout": {
+      "post": {
+        "tags": [
+          "auth"
+        ],
+        "summary": "`POST /auth/logout` — revoke a refresh token (log out a device).",
+        "operationId": "logout",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LogoutBody"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "204": {
+            "description": "Logged out"
+          }
+        }
+      }
+    },
+    "/api/v1/auth/me": {
+      "get": {
+        "tags": [
+          "auth"
+        ],
+        "summary": "`GET /auth/me` — return the current user's full profile.",
+        "operationId": "me",
+        "responses": {
+          "200": {
+            "description": "Current user profile",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "security": [
+          {
+            "bearer_auth": []
+          }
+        ]
+      },
+      "patch": {
+        "tags": [
+          "auth"
+        ],
+        "summary": "`PATCH /auth/me` — update the current user's display name and / or avatar.",
+        "description": "Only the fields present in the request body are updated.  Omit a field\nentirely to leave it unchanged; set it to `null` to clear it.",
+        "operationId": "update_me",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateProfileRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Profile updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "security": [
+          {
+            "bearer_auth": []
+          }
+        ]
+      }
+    },
+    "/api/v1/auth/me/password": {
+      "post": {
+        "tags": [
+          "auth"
+        ],
+        "summary": "`POST /auth/me/password` — change the current user's own password.",
+        "description": "Requires the caller to supply their **current** password in `old_password`.\nFor admin-initiated forced resets see `POST /admin/users/{id}/reset-password`.",
+        "operationId": "change_password",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChangeOwnPasswordRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "204": {
+            "description": "Password changed"
+          },
+          "401": {
+            "description": "Unauthorized or wrong current password"
+          }
+        },
+        "security": [
+          {
+            "bearer_auth": []
+          }
+        ]
+      }
+    },
+    "/api/v1/auth/me/send-change-password-otp": {
+      "post": {
+        "tags": [
+          "auth"
+        ],
+        "summary": "`POST /auth/me/send-change-password-otp` — send OTP to own email before changing password.",
+        "description": "No-op (204) when email verification is disabled in config.",
+        "operationId": "send_change_password_otp",
+        "responses": {
+          "204": {
+            "description": "OTP sent (or no-op if email verification is disabled)"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "security": [
+          {
+            "bearer_auth": []
+          }
+        ]
+      }
+    },
+    "/api/v1/auth/refresh": {
+      "post": {
+        "tags": [
+          "auth"
+        ],
+        "summary": "`POST /auth/refresh` — exchange a refresh token for a new pair (rotation).",
+        "operationId": "refresh",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RefreshBody"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Token refreshed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TokenPair"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Invalid or expired refresh token"
+          }
+        }
+      }
+    },
+    "/api/v1/auth/register": {
+      "post": {
+        "tags": [
+          "auth"
+        ],
+        "summary": "`POST /auth/register` — create a new account.",
+        "description": "Returns `201 Created` with the [`User`] object on success.",
+        "operationId": "register",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RegisterRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "User registered successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation error"
+          },
+          "409": {
+            "description": "Username or email already taken"
+          }
+        }
+      }
+    },
+    "/api/v1/auth/reset-password": {
+      "post": {
+        "tags": [
+          "auth"
+        ],
+        "summary": "`POST /auth/reset-password` — set a new password using the OTP.",
+        "description": "Returns `204 No Content` on success.",
+        "operationId": "reset_password",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ResetPasswordWithOtpRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "204": {
+            "description": "Password reset successful"
+          },
+          "400": {
+            "description": "Invalid OTP or expired"
+          }
+        }
+      }
+    },
+    "/api/v1/auth/send-register-otp": {
+      "post": {
+        "tags": [
+          "auth"
+        ],
+        "summary": "`POST /auth/send-register-otp` — email a 6-digit code before registration.",
+        "description": "The client should call this before `POST /auth/register` when\n`email.verification_required = true`.  Returns `204 No Content`.",
+        "operationId": "send_register_otp",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SendOtpRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "204": {
+            "description": "OTP sent"
+          }
+        }
+      }
+    },
+    "/api/v1/auth/send-unlock-otp": {
+      "post": {
+        "tags": [
+          "auth"
+        ],
+        "summary": "`POST /auth/send-unlock-otp` — email an unlock OTP for a locked account.",
+        "description": "Returns `204 No Content` always (prevents enumeration).",
+        "operationId": "send_unlock_otp",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SendOtpRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "204": {
+            "description": "Unlock OTP sent (always 204 to prevent enumeration)"
+          }
+        }
+      }
+    },
+    "/api/v1/auth/sessions": {
+      "get": {
+        "tags": [
+          "auth"
+        ],
+        "summary": "`GET /auth/sessions` — list all active sessions for the current user.",
+        "operationId": "list_sessions",
+        "responses": {
+          "200": {
+            "description": "Active sessions",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/SessionInfo"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "security": [
+          {
+            "bearer_auth": []
+          }
+        ]
+      }
+    },
+    "/api/v1/auth/sessions/{family}": {
+      "delete": {
+        "tags": [
+          "auth"
+        ],
+        "summary": "`DELETE /auth/sessions/{family}` — revoke a single device session.",
+        "operationId": "revoke_session",
+        "parameters": [
+          {
+            "name": "family",
+            "in": "path",
+            "description": "Session family UUID to revoke",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Session revoked"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Session not found"
+          }
+        },
+        "security": [
+          {
+            "bearer_auth": []
+          }
+        ]
+      }
+    },
+    "/api/v1/auth/unlock-account": {
+      "post": {
+        "tags": [
+          "auth"
+        ],
+        "summary": "`POST /auth/unlock-account` — clear the lockout using the OTP.",
+        "description": "Returns `204 No Content` on success.",
+        "operationId": "unlock_account",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UnlockWithOtpRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "204": {
+            "description": "Account unlocked"
+          },
+          "400": {
+            "description": "Invalid OTP or expired"
+          }
+        }
+      }
+    },
+    "/api/v1/download/{id}": {
+      "get": {
+        "tags": [
+          "files"
+        ],
+        "summary": "`GET /download/{id}` — download file content.",
+        "description": "Supports the `Range` header for partial content delivery (HTTP 206).\nFull files are returned with `200 OK`.\n\n### Routing before I/O\n\nThe total file size is resolved from the VFS metadata first.  If the\nresolved size exceeds the applicable per-client/per-mode limit, a\nstructured error is returned before any bytes are read from storage:\n- Native client, size >= `large_file_threshold` → `426` (use QUIC).\n- Web client, size > web limit → `413` (install native client).",
+        "operationId": "download_file",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "File node ID",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Full file content",
+            "content": {
+              "application/octet-stream": {}
+            }
+          },
+          "206": {
+            "description": "Partial content (Range request)"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "413": {
+            "description": "File too large for web download"
+          },
+          "426": {
+            "description": "Use QUIC for large files (native client)"
+          }
+        },
+        "security": [
+          {
+            "bearer_auth": []
+          }
+        ]
+      }
+    },
+    "/api/v1/files/directory": {
+      "post": {
+        "tags": [
+          "files"
+        ],
+        "summary": "`POST /files/directory` — create a new subdirectory.",
+        "operationId": "create_directory",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateDirectoryBody"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Directory created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FileNode"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation error"
+          },
+          "404": {
+            "description": "Parent not found"
+          }
+        },
+        "security": [
+          {
+            "bearer_auth": []
+          }
+        ]
+      }
+    },
+    "/api/v1/files/root": {
+      "get": {
+        "tags": [
+          "files"
+        ],
+        "summary": "`GET /files/root` — list all personal root nodes owned by the caller.",
+        "description": "Returns the user's root directories (nodes with no parent).",
+        "operationId": "list_roots",
+        "responses": {
+          "200": {
+            "description": "List of root directories",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/FileNode"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer_auth": []
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "files"
+        ],
+        "summary": "`POST /files/root` — create the personal root directory for the caller.",
+        "description": "Idempotent in the sense that callers should call `GET /files/root` first;\nthis endpoint always creates a *new* root node.",
+        "operationId": "create_root",
+        "responses": {
+          "201": {
+            "description": "Root directory created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FileNode"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer_auth": []
+          }
+        ]
+      }
+    },
+    "/api/v1/files/trash": {
+      "get": {
+        "tags": [
+          "files"
+        ],
+        "summary": "`GET /files/trash` — list all soft-deleted nodes owned by the caller.",
+        "operationId": "list_trash",
+        "responses": {
+          "200": {
+            "description": "Trash contents",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/FileNode"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer_auth": []
+          }
+        ]
+      }
+    },
+    "/api/v1/files/{id}": {
+      "get": {
+        "tags": [
+          "files"
+        ],
+        "summary": "`GET /files/{id}` — fetch a single node.",
+        "operationId": "get_node",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "File/directory node ID",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Node metadata",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FileNode"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found"
+          }
+        },
+        "security": [
+          {
+            "bearer_auth": []
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "files"
+        ],
+        "summary": "`DELETE /files/{id}` — soft-delete (move to trash).",
+        "operationId": "soft_delete",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Node ID",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Moved to trash"
+          },
+          "404": {
+            "description": "Not found"
+          }
+        },
+        "security": [
+          {
+            "bearer_auth": []
+          }
+        ]
+      }
+    },
+    "/api/v1/files/{id}/children": {
+      "get": {
+        "tags": [
+          "files"
+        ],
+        "summary": "`GET /files/{id}/children?page=1&per_page=20` — list a directory's contents.",
+        "operationId": "list_children",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Directory node ID",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Page number (1-based)",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "minimum": 0
+            }
+          },
+          {
+            "name": "per_page",
+            "in": "query",
+            "description": "Items per page",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "minimum": 0
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Directory listing",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/FileNode"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found"
+          }
+        },
+        "security": [
+          {
+            "bearer_auth": []
+          }
+        ]
+      }
+    },
+    "/api/v1/files/{id}/copy": {
+      "post": {
+        "tags": [
+          "files"
+        ],
+        "summary": "`POST /files/{id}/copy` — copy a node (and subtree) under a new parent.",
+        "description": "Returns the root of the copied subtree with a new ID.",
+        "operationId": "copy_node",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Node ID",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CopyBody"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Copy created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FileNode"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found"
+          }
+        },
+        "security": [
+          {
+            "bearer_auth": []
+          }
+        ]
+      }
+    },
+    "/api/v1/files/{id}/move": {
+      "post": {
+        "tags": [
+          "files"
+        ],
+        "summary": "`POST /files/{id}/move` — move a node to a different parent.",
+        "operationId": "move_node",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Node ID",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MoveBody"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Node moved",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FileNode"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found"
+          }
+        },
+        "security": [
+          {
+            "bearer_auth": []
+          }
+        ]
+      }
+    },
+    "/api/v1/files/{id}/name": {
+      "put": {
+        "tags": [
+          "files"
+        ],
+        "summary": "`PUT /files/{id}/name` — rename a node.",
+        "operationId": "rename",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Node ID",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RenameBody"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Node renamed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FileNode"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found"
+          }
+        },
+        "security": [
+          {
+            "bearer_auth": []
+          }
+        ]
+      }
+    },
+    "/api/v1/files/{id}/permanent": {
+      "delete": {
+        "tags": [
+          "files"
+        ],
+        "summary": "`DELETE /files/{id}/permanent` — permanently destroy a node.",
+        "description": "Irreversible.  The node and all its descendants are removed from the\ndatabase.  Content deduplication means storage chunks are only freed\nby a separate garbage-collection pass.",
+        "operationId": "permanent_delete",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Node ID",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Permanently deleted"
+          },
+          "404": {
+            "description": "Not found"
+          }
+        },
+        "security": [
+          {
+            "bearer_auth": []
+          }
+        ]
+      }
+    },
+    "/api/v1/files/{id}/restore": {
+      "post": {
+        "tags": [
+          "files"
+        ],
+        "summary": "`POST /files/{id}/restore` — restore from trash.",
+        "operationId": "restore",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Node ID",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Node restored from trash",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FileNode"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found"
+          }
+        },
+        "security": [
+          {
+            "bearer_auth": []
+          }
+        ]
+      }
+    },
+    "/api/v1/setup/complete": {
+      "post": {
+        "tags": [
+          "setup"
+        ],
+        "summary": "`POST /api/v1/setup/complete`",
+        "description": "Performs the first-run setup:\n1. Validates the request body.\n2. Creates the Owner account via [`AuthService::bootstrap_owner`].\n3. Persists site settings to the `system_settings` table.\n4. Marks setup as complete (DB + in-memory atomic flag).\n\nReturns `409 Conflict` if setup has already been completed.",
+        "operationId": "complete",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SetupCompleteRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Setup completed successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SetupCompleteResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Setup has already been completed"
+          }
+        }
+      }
+    },
+    "/api/v1/setup/status": {
+      "get": {
+        "tags": [
+          "setup"
+        ],
+        "summary": "`GET /api/v1/setup/status`",
+        "description": "Returns whether the server still needs to be configured.\nSafe to call anonymously; returns no sensitive information.",
+        "operationId": "status",
+        "responses": {
+          "200": {
+            "description": "Setup status",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SetupStatusResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/upload/": {
+      "post": {
+        "tags": [
+          "files"
+        ],
+        "summary": "`POST /upload/?parent_id=…&name=…` — upload a file.",
+        "description": "Accepts the raw file bytes in the request body.  The pipeline:\n1. Receives raw bytes (Actix request body limit applies).\n2. Routes based on client type and file size:\n   - Native client, size >= `large_file_threshold` → `426 Upgrade Required` (use QUIC).\n   - Web client, size > web limit → `413 Payload Too Large` (install native client).\n3. Runs FastCDC chunking.\n4. Writes chunks to all configured storage backends (dedup-aware).\n5. Creates a `FileNode` record in the VFS under `parent_id`.\n\n### Client identification\n\nSet the `X-Jiezi-Client: native` request header to identify as the native\ndesktop / mobile client.  Absence of this header (or any other value) is\ntreated as a web-browser client.\n\nReturns the new [`FileNode`] as JSON with `201 Created`.",
+        "operationId": "upload_file",
+        "parameters": [
+          {
+            "name": "parent_id",
+            "in": "query",
+            "description": "Parent directory ID",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "name",
+            "in": "query",
+            "description": "Filename",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "mime_type",
+            "in": "query",
+            "description": "MIME type hint",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/octet-stream": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "type": "integer",
+                  "format": "int32",
+                  "minimum": 0
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "File uploaded",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FileNode"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "File too large for web upload"
+          },
+          "426": {
+            "description": "Use QUIC for large files (native client)"
+          }
+        },
+        "security": [
+          {
+            "bearer_auth": []
+          }
+        ]
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "AdminResetPasswordRequest": {
+        "type": "object",
+        "description": "Payload for `POST /admin/users/{id}/reset-password` — admin force-reset.",
+        "required": [
+          "new_password"
+        ],
+        "properties": {
+          "new_password": {
+            "type": "string",
+            "description": "The new password to assign.  Minimum 8 characters."
+          }
+        }
+      },
+      "ChangeOwnPasswordRequest": {
+        "type": "object",
+        "description": "Payload for `POST /auth/me/password` — change own password.",
+        "required": [
+          "old_password",
+          "new_password"
+        ],
+        "properties": {
+          "email_otp": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "6-digit OTP sent to the account email.  Required when\n`email_verification_required` is enabled in config."
+          },
+          "new_password": {
+            "type": "string",
+            "description": "The desired new password (minimum 8 characters)."
+          },
+          "old_password": {
+            "type": "string",
+            "description": "The caller's current password (verified before accepting the change)."
+          }
+        }
+      },
+      "ChangeRoleRequest": {
+        "type": "object",
+        "description": "Payload for `PATCH /admin/users/{id}/role` — change a user's system role.",
+        "required": [
+          "new_role"
+        ],
+        "properties": {
+          "new_role": {
+            "$ref": "#/components/schemas/Role"
+          }
+        }
+      },
+      "CopyBody": {
+        "type": "object",
+        "description": "Body for `POST /files/{id}/copy`.",
+        "required": [
+          "new_parent_id"
+        ],
+        "properties": {
+          "new_parent_id": {
+            "type": "string",
+            "description": "ID of the destination parent directory."
+          }
+        }
+      },
+      "CreateDirectoryBody": {
+        "type": "object",
+        "description": "Body for `POST /files/directory`.",
+        "required": [
+          "parent_id",
+          "name"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Name of the new directory."
+          },
+          "parent_id": {
+            "type": "string",
+            "description": "ID of the parent directory."
+          }
+        }
+      },
+      "FileId": {
+        "type": "string",
+        "format": "uuid",
+        "description": "Identifies a file or directory node in the virtual file system."
+      },
+      "FileMetadata": {
+        "type": "object",
+        "description": "Extended, optional metadata attached to a file node.",
+        "properties": {
+          "extra": {
+            "type": "object",
+            "description": "Arbitrary key-value pairs sourced from upload headers or EXIF data.",
+            "additionalProperties": {},
+            "propertyNames": {
+              "type": "string"
+            }
+          },
+          "has_thumbnail": {
+            "type": "boolean",
+            "description": "Whether a thumbnail has been generated for this file."
+          },
+          "is_indexed": {
+            "type": "boolean",
+            "description": "Whether the file content has been submitted to the search index."
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "User-defined tags for filtering and organisation."
+          }
+        }
+      },
+      "FileNode": {
+        "type": "object",
+        "description": "A node in the virtual file system — either a file or a directory.\n\nFile content is stored separately by the storage backend; this struct\nholds only the metadata that lives in the database.",
+        "required": [
+          "id",
+          "space_id",
+          "owner_id",
+          "name",
+          "node_type",
+          "size",
+          "created_at",
+          "updated_at",
+          "metadata"
+        ],
+        "properties": {
+          "content_hash": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "SHA-256 hex digest of the full file content."
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "deleted_at": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date-time",
+            "description": "Set when the node has been soft-deleted (moved to trash)."
+          },
+          "id": {
+            "$ref": "#/components/schemas/FileId"
+          },
+          "metadata": {
+            "$ref": "#/components/schemas/FileMetadata"
+          },
+          "mime_type": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "MIME type detected at upload time (e.g. `\"image/jpeg\"`)."
+          },
+          "name": {
+            "type": "string"
+          },
+          "node_type": {
+            "$ref": "#/components/schemas/NodeType"
+          },
+          "owner_id": {
+            "$ref": "#/components/schemas/UserId"
+          },
+          "parent_id": {
+            "oneOf": [
+              {
+                "type": "null"
+              },
+              {
+                "$ref": "#/components/schemas/FileId",
+                "description": "`None` only for the root node of a space."
+              }
+            ]
+          },
+          "size": {
+            "type": "integer",
+            "format": "int64",
+            "description": "File size in bytes.  Zero for directories.",
+            "minimum": 0
+          },
+          "space_id": {
+            "$ref": "#/components/schemas/SpaceId"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "LoginRequest": {
+        "type": "object",
+        "description": "Payload for the user login endpoint.",
+        "required": [
+          "credential",
+          "password"
+        ],
+        "properties": {
+          "credential": {
+            "type": "string",
+            "description": "Either a username or an email address."
+          },
+          "device_label": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Optional human-readable label for the device initiating the login.\nShown in the active sessions list so users can identify and revoke\nspecific devices (e.g. \"iPhone 15\", \"Home PC — Firefox\")."
+          },
+          "password": {
+            "type": "string"
+          }
+        }
+      },
+      "LogoutBody": {
+        "type": "object",
+        "required": [
+          "refresh_token"
+        ],
+        "properties": {
+          "refresh_token": {
+            "type": "string"
+          }
+        }
+      },
+      "MoveBody": {
+        "type": "object",
+        "description": "Body for `POST /files/{id}/move`.",
+        "required": [
+          "new_parent_id"
+        ],
+        "properties": {
+          "new_parent_id": {
+            "type": "string"
+          }
+        }
+      },
+      "NodeType": {
+        "type": "string",
+        "description": "The kind of a virtual file system node.",
+        "enum": [
+          "file",
+          "directory",
+          "symlink"
+        ]
+      },
+      "PageRequest": {
+        "type": "object",
+        "description": "Pagination parameters sent by the client in query strings or request bodies.",
+        "required": [
+          "page",
+          "per_page"
+        ],
+        "properties": {
+          "page": {
+            "type": "integer",
+            "format": "int32",
+            "description": "1-based page number.",
+            "minimum": 0
+          },
+          "per_page": {
+            "type": "integer",
+            "format": "int32",
+            "description": "Maximum number of items per page.",
+            "minimum": 0
+          }
+        }
+      },
+      "RefreshBody": {
+        "type": "object",
+        "required": [
+          "refresh_token"
+        ],
+        "properties": {
+          "refresh_token": {
+            "type": "string"
+          }
+        }
+      },
+      "RegisterRequest": {
+        "type": "object",
+        "description": "Payload for the user registration endpoint.",
+        "required": [
+          "username",
+          "email",
+          "password"
+        ],
+        "properties": {
+          "display_name": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Optional friendly name shown in the UI."
+          },
+          "email": {
+            "type": "string"
+          },
+          "email_otp": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "OTP code sent to `email` via `POST /auth/send-register-otp`.\n\nRequired when `email.verification_required = true` in config;\nignored (and may be absent) otherwise."
+          },
+          "password": {
+            "type": "string"
+          },
+          "username": {
+            "type": "string"
+          }
+        }
+      },
+      "RenameBody": {
+        "type": "object",
+        "description": "Body for `PUT /files/{id}/name`.",
+        "required": [
+          "new_name"
+        ],
+        "properties": {
+          "new_name": {
+            "type": "string"
+          }
+        }
+      },
+      "ResetPasswordWithOtpRequest": {
+        "type": "object",
+        "description": "Payload for `POST /auth/reset-password` — reset password using an OTP code.",
+        "required": [
+          "email",
+          "code",
+          "new_password"
+        ],
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "The 6-digit OTP that was emailed via `POST /auth/forgot-password`."
+          },
+          "email": {
+            "type": "string"
+          },
+          "new_password": {
+            "type": "string"
+          }
+        }
+      },
+      "Role": {
+        "type": "string",
+        "description": "User role — determines the base set of permissions.\nResource-level overrides can refine these defaults.",
+        "enum": [
+          "owner",
+          "admin",
+          "member",
+          "guest"
+        ]
+      },
+      "SendOtpRequest": {
+        "type": "object",
+        "description": "Payload for `POST /auth/send-register-otp` — request an OTP for registration.",
+        "required": [
+          "email"
+        ],
+        "properties": {
+          "email": {
+            "type": "string",
+            "description": "The email address to send the OTP to."
+          }
+        }
+      },
+      "SessionInfo": {
+        "type": "object",
+        "description": "Represents a single active login session visible to the user.\n\nIdentified by its `family` UUID, which stays constant across all\nrefresh-token rotations within the same login session.",
+        "required": [
+          "family",
+          "session_started",
+          "expires_at"
+        ],
+        "properties": {
+          "device_label": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Human-readable label supplied by the client at login time."
+          },
+          "expires_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "When the active refresh token in this session expires."
+          },
+          "family": {
+            "type": "string",
+            "description": "Stable identifier for this session (JWT rotation family UUID)."
+          },
+          "session_started": {
+            "type": "string",
+            "format": "date-time",
+            "description": "When the session was first created (i.e., when the user logged in)."
+          }
+        }
+      },
+      "SetActiveRequest": {
+        "type": "object",
+        "description": "Payload for `PATCH /admin/users/{id}/status` — suspend or reactivate.",
+        "required": [
+          "is_active"
+        ],
+        "properties": {
+          "is_active": {
+            "type": "boolean"
+          }
+        }
+      },
+      "SetQuotaRequest": {
+        "type": "object",
+        "description": "Payload for `PATCH /admin/users/{id}/quota` — set storage quota.",
+        "properties": {
+          "storage_quota": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "format": "int64",
+            "description": "Storage maximum in bytes.  `null` means unlimited.",
+            "minimum": 0
+          }
+        }
+      },
+      "SetupCompleteRequest": {
+        "type": "object",
+        "description": "Request body for `POST /setup/complete`.\n\nAll fields are validated server-side.  Passwords are never stored in plain\ntext; they are hashed with Argon2id before persistence.",
+        "required": [
+          "admin_username",
+          "admin_email",
+          "admin_password",
+          "site_name"
+        ],
+        "properties": {
+          "admin_display_name": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Optional display name shown in the UI (e.g. \"System Administrator\")."
+          },
+          "admin_email": {
+            "type": "string",
+            "description": "Email address for the super-admin account."
+          },
+          "admin_password": {
+            "type": "string",
+            "description": "Password for the super-admin account (minimum 8 characters)."
+          },
+          "admin_username": {
+            "type": "string",
+            "description": "Login username for the super-admin account (3-50 chars, alphanumeric/-/_)."
+          },
+          "max_upload_size_mb": {
+            "type": "integer",
+            "format": "int32",
+            "description": "Maximum upload size in megabytes.",
+            "minimum": 0
+          },
+          "registration_enabled": {
+            "type": "boolean",
+            "description": "Allow unauthenticated visitors to register new accounts.\nSet to `false` for invite-only or enterprise deployments."
+          },
+          "site_description": {
+            "type": "string",
+            "description": "Optional short description / tagline for the site."
+          },
+          "site_name": {
+            "type": "string",
+            "description": "Human-readable site name shown in the web UI and emails."
+          }
+        }
+      },
+      "SetupCompleteResponse": {
+        "type": "object",
+        "description": "Response body for a successful `POST /setup/complete`.",
+        "required": [
+          "success",
+          "message"
+        ],
+        "properties": {
+          "message": {
+            "type": "string"
+          },
+          "success": {
+            "type": "boolean"
+          }
+        }
+      },
+      "SetupStatusResponse": {
+        "type": "object",
+        "description": "Response body for `GET /setup/status`.",
+        "required": [
+          "setup_required",
+          "version"
+        ],
+        "properties": {
+          "setup_required": {
+            "type": "boolean",
+            "description": "When `true` the server requires setup before it can be used."
+          },
+          "version": {
+            "type": "string",
+            "description": "Jiezi Cloud server version string."
+          }
+        }
+      },
+      "SpaceId": {
+        "type": "string",
+        "format": "uuid",
+        "description": "Identifies a collaborative space (personal or shared)."
+      },
+      "TokenPair": {
+        "type": "object",
+        "description": "A short-lived access token paired with a longer-lived refresh token.\nReturned after a successful login or token refresh.",
+        "required": [
+          "access_token",
+          "refresh_token",
+          "expires_in"
+        ],
+        "properties": {
+          "access_token": {
+            "type": "string"
+          },
+          "expires_in": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Seconds until `access_token` expires.",
+            "minimum": 0
+          },
+          "refresh_token": {
+            "type": "string"
+          }
+        }
+      },
+      "UnlockWithOtpRequest": {
+        "type": "object",
+        "description": "Payload for `POST /auth/unlock-account` — unlock a locked account using OTP.",
+        "required": [
+          "email",
+          "code"
+        ],
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "The 6-digit OTP that was emailed via `POST /auth/send-unlock-otp`."
+          },
+          "email": {
+            "type": "string"
+          }
+        }
+      },
+      "UpdateProfileRequest": {
+        "type": "object",
+        "description": "Payload for updating one's own profile (display name, avatar).\n\nEach field is doubly-wrapped in `Option` so the client can distinguish\n\"omit this field\" (`None`) from \"clear this field\" (`Some(None)`).",
+        "properties": {
+          "avatar_url": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Pass `Some(Some(\"https://…\"))` to set, `Some(None)` to clear."
+          },
+          "display_name": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Pass `Some(Some(\"Alice\"))` to set, `Some(None)` to clear."
+          }
+        }
+      },
+      "UploadQuery": {
+        "type": "object",
+        "description": "Query parameters for `POST /api/v1/upload/`.",
+        "required": [
+          "parent_id",
+          "name"
+        ],
+        "properties": {
+          "mime_type": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Optional MIME type hint from the client."
+          },
+          "name": {
+            "type": "string",
+            "description": "Filename to store."
+          },
+          "parent_id": {
+            "type": "string",
+            "description": "ID of the parent directory in the VFS."
+          }
+        }
+      },
+      "User": {
+        "type": "object",
+        "description": "Core user entity.",
+        "required": [
+          "id",
+          "username",
+          "email",
+          "role",
+          "created_at",
+          "updated_at",
+          "is_active",
+          "storage_used",
+          "email_verified"
+        ],
+        "properties": {
+          "avatar_url": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Optional URL to the user's avatar image."
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "display_name": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Optional display name shown in the UI."
+          },
+          "email": {
+            "type": "string"
+          },
+          "email_verified": {
+            "type": "boolean",
+            "description": "Whether the user has verified their email address via OTP.\n\nWhen `email.verification_required = true` in config, users must supply\nthe correct OTP code during registration before the account is confirmed."
+          },
+          "id": {
+            "$ref": "#/components/schemas/UserId"
+          },
+          "is_active": {
+            "type": "boolean",
+            "description": "Whether the account is active (not suspended)."
+          },
+          "role": {
+            "$ref": "#/components/schemas/Role",
+            "description": "System-level role."
+          },
+          "storage_quota": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "format": "int64",
+            "description": "Maximum storage this user may consume across all their spaces,\nin bytes.  `None` means unlimited.",
+            "minimum": 0
+          },
+          "storage_used": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Running total of bytes consumed.",
+            "minimum": 0
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "username": {
+            "type": "string"
+          }
+        }
+      },
+      "UserId": {
+        "type": "string",
+        "format": "uuid",
+        "description": "Identifies a user account."
+      }
+    },
+    "securitySchemes": {
+      "bearer_auth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT",
+        "description": "JWT access token — obtain from POST /api/v1/auth/login"
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "setup",
+      "description": "First-run setup wizard"
+    },
+    {
+      "name": "auth",
+      "description": "Authentication & sessions"
+    },
+    {
+      "name": "files",
+      "description": "Virtual file system — nodes, upload, download"
+    },
+    {
+      "name": "admin",
+      "description": "Administrator user management"
+    }
+  ]
 }

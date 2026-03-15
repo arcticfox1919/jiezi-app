@@ -233,8 +233,8 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
                                           : Icons.visibility_off_outlined,
                                     ),
                                     onPressed: () => setState(
-                                      () => _obscurePassword =
-                                          !_obscurePassword,
+                                      () =>
+                                          _obscurePassword = !_obscurePassword,
                                     ),
                                   ),
                                 ],

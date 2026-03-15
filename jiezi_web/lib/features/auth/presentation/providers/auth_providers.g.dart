@@ -129,7 +129,7 @@ final class AuthNotifierProvider
   }
 }
 
-String _$authNotifierHash() => r'3255fdab00b9598451514c8ac0becd698b1478e1';
+String _$authNotifierHash() => r'7e3e7f73ad329d5bde2f92f63f77c94550f9f513';
 
 abstract class _$AuthNotifier extends $Notifier<AsyncValue<void>> {
   AsyncValue<void> build();
@@ -181,7 +181,7 @@ final class RegisterNotifierProvider
   }
 }
 
-String _$registerNotifierHash() => r'299f23f226aea46cae31923f10e233f7da0dc2a3';
+String _$registerNotifierHash() => r'425b58dfd0d05af4189972f7613cfbd8bd291c33';
 
 abstract class _$RegisterNotifier extends $Notifier<RegisterFormState> {
   RegisterFormState build();

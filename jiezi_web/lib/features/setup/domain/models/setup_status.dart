@@ -3,7 +3,11 @@
 /// Mirrors [SetupStatusResponse] from the API layer but lives in the domain
 /// so that nothing above the repository boundary depends on jiezi_api.
 class SetupStatus {
-  const SetupStatus({required this.setupRequired, required this.serverVersion});
+  const SetupStatus({
+    required this.setupRequired,
+    required this.serverVersion,
+    required this.registrationEnabled,
+  });
 
   /// When `true` the server has not been initialised and the setup wizard
   /// must be completed before the app can be used.
@@ -12,6 +16,10 @@ class SetupStatus {
   /// Server version string, e.g. `"0.1.0"`.
   final String serverVersion;
 
+  /// When `true` unauthenticated visitors may register new accounts.
+  final bool registrationEnabled;
+
   @override
-  String toString() => 'SetupStatus(required=$setupRequired, v=$serverVersion)';
+  String toString() =>
+      'SetupStatus(required=$setupRequired, v=$serverVersion, registration=$registrationEnabled)';
 }

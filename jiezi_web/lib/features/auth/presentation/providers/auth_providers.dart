@@ -59,17 +59,26 @@ class AuthNotifier extends _$AuthNotifier {
   }
 
   /// Logs out and clears the local session.
+  ///
+  /// [authStateProvider] is always invalidated (even on network failure) so
+  /// the router guard always redirects to the login page.  Token storage is
+  /// cleared inside [IAuthRepository.logout] via a `finally` block, so a
+  /// local sign-out is guaranteed regardless of server response.
   Future<void> logout() async {
     state = const AsyncLoading();
     state = await AsyncValue.guard(() async {
-      // Read the current auth state via the provider's future.
-      final authAsync = await ref.read(authStateProvider.future);
-      final refreshToken = authAsync.refreshToken;
-      if (refreshToken != null) {
-        final repo = await ref.read(authRepositoryProvider.future);
-        await repo.logout(refreshToken: refreshToken);
+      try {
+        final authAsync = await ref.read(authStateProvider.future);
+        final refreshToken = authAsync.refreshToken;
+        if (refreshToken != null) {
+          final repo = await ref.read(authRepositoryProvider.future);
+          await repo.logout(refreshToken: refreshToken);
+        }
+      } finally {
+        // Invalidate auth state so the router guard re-evaluates and
+        // redirects to the login page even if the server call failed.
+        ref.invalidate(authStateProvider);
       }
-      ref.invalidate(authStateProvider);
     });
   }
 }

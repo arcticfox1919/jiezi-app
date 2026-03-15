@@ -18,17 +18,13 @@ class FilesClient {
   ///
   /// [baseUrl] overrides any base URL already configured on the
   /// [Gio] instance for this client only.
-  FilesClient(Gio gio, {String? baseUrl})
-      : _gio = gio,
-        _baseUrl = baseUrl;
+  FilesClient(Gio gio, {String? baseUrl}) : _gio = gio, _baseUrl = baseUrl;
 
   final Gio _gio;
   final String? _baseUrl;
 
   /// `POST /files/directory` — create a new subdirectory.
-  Future<FileNode> createDirectory({
-    required CreateDirectoryBody body,
-  }) async {
+  Future<FileNode> createDirectory({required CreateDirectoryBody body}) async {
     final response = await _gio.post(
       '${_baseUrl ?? ''}/api/v1/files/directory',
       jsonBody: body.toJson(),
@@ -36,11 +32,28 @@ class FilesClient {
     return FileNode.fromJson(jsonDecode(response.body) as Map<String, dynamic>);
   }
 
+  /// `GET /files/root` — list all personal root nodes owned by the caller.
+  ///
+  /// Returns the user's root directories (nodes with no parent).
+  Future<List<FileNode>> listRoots() async {
+    final response = await _gio.get('${_baseUrl ?? ''}/api/v1/files/root');
+    return (jsonDecode(response.body) as List)
+        .map((e) => FileNode.fromJson(e as Map<String, dynamic>))
+        .toList();
+  }
+
+  /// `POST /files/root` — create the personal root directory for the caller.
+  ///
+  /// Idempotent in the sense that callers should call `GET /files/root` first;.
+  /// this endpoint always creates a *new* root node.
+  Future<FileNode> createRoot() async {
+    final response = await _gio.post('${_baseUrl ?? ''}/api/v1/files/root');
+    return FileNode.fromJson(jsonDecode(response.body) as Map<String, dynamic>);
+  }
+
   /// `GET /files/trash` — list all soft-deleted nodes owned by the caller.
   Future<List<FileNode>> listTrash() async {
-    final response = await _gio.get(
-      '${_baseUrl ?? ''}/api/v1/files/trash',
-    );
+    final response = await _gio.get('${_baseUrl ?? ''}/api/v1/files/trash');
     return (jsonDecode(response.body) as List)
         .map((e) => FileNode.fromJson(e as Map<String, dynamic>))
         .toList();
@@ -49,24 +62,16 @@ class FilesClient {
   /// `GET /files/{id}` — fetch a single node.
   ///
   /// [id] - File/directory node ID.
-  Future<FileNode> getNode({
-    required String id,
-  }) async {
-    final response = await _gio.get(
-      '${_baseUrl ?? ''}/api/v1/files/${id}',
-    );
+  Future<FileNode> getNode({required String id}) async {
+    final response = await _gio.get('${_baseUrl ?? ''}/api/v1/files/${id}');
     return FileNode.fromJson(jsonDecode(response.body) as Map<String, dynamic>);
   }
 
   /// `DELETE /files/{id}` — soft-delete (move to trash).
   ///
   /// [id] - Node ID.
-  Future<void> softDelete({
-    required String id,
-  }) async {
-    await _gio.delete(
-      '${_baseUrl ?? ''}/api/v1/files/${id}',
-    );
+  Future<void> softDelete({required String id}) async {
+    await _gio.delete('${_baseUrl ?? ''}/api/v1/files/${id}');
   }
 
   /// `GET /files/{id}/children?page=1&per_page=20` — list a directory's contents.
@@ -88,7 +93,9 @@ class FilesClient {
         if (perPage != null) 'per_page': perPage,
       },
     );
-    return (jsonDecode(response.body) as List)
+    // The server returns a PageResponse envelope: { "items": [...], "total": N, ... }
+    final json = jsonDecode(response.body) as Map<String, dynamic>;
+    return (json['items'] as List)
         .map((e) => FileNode.fromJson(e as Map<String, dynamic>))
         .toList();
   }
@@ -144,20 +151,14 @@ class FilesClient {
   /// by a separate garbage-collection pass.
   ///
   /// [id] - Node ID.
-  Future<void> permanentDelete({
-    required String id,
-  }) async {
-    await _gio.delete(
-      '${_baseUrl ?? ''}/api/v1/files/${id}/permanent',
-    );
+  Future<void> permanentDelete({required String id}) async {
+    await _gio.delete('${_baseUrl ?? ''}/api/v1/files/${id}/permanent');
   }
 
   /// `POST /files/{id}/restore` — restore from trash.
   ///
   /// [id] - Node ID.
-  Future<FileNode> restore({
-    required String id,
-  }) async {
+  Future<FileNode> restore({required String id}) async {
     final response = await _gio.post(
       '${_baseUrl ?? ''}/api/v1/files/${id}/restore',
     );

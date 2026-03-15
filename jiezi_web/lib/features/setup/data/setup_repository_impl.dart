@@ -1,5 +1,6 @@
 import 'package:jiezi_api/jiezi_api.dart';
 
+import '../../../core/error/api_response_exception.dart';
 import '../../../core/error/app_error.dart';
 import '../domain/models/setup_form_data.dart';
 import '../domain/models/setup_status.dart';
@@ -18,6 +19,7 @@ class SetupRepositoryImpl implements ISetupRepository {
       return SetupStatus(
         setupRequired: response.setupRequired,
         serverVersion: response.version,
+        registrationEnabled: response.registrationEnabled,
       );
     } on Exception catch (e) {
       throw _mapException(e);
@@ -48,27 +50,19 @@ class SetupRepositoryImpl implements ISetupRepository {
 
   /// Converts a raw exception from the HTTP layer into an [AppError] variant.
   AppError _mapException(Exception e) {
-    final msg = e.toString();
-
-    // gio throws an exception whose message contains the status code.
-    final codeMatch = RegExp(r'(\d{3})').firstMatch(msg);
-    if (codeMatch != null) {
-      final code = int.tryParse(codeMatch.group(1) ?? '') ?? 0;
-      return ServerError(statusCode: code, message: _friendlyMessage(code));
+    if (e is ApiResponseException) {
+      return ServerError(
+        statusCode: e.statusCode,
+        errorCode: e.errorCode,
+        message: e.message,
+      );
     }
-
+    final msg = e.toString();
     if (msg.toLowerCase().contains('socket') ||
-        msg.toLowerCase().contains('connection')) {
+        msg.toLowerCase().contains('connection refused') ||
+        msg.toLowerCase().contains('network is unreachable')) {
       return const NetworkError();
     }
-
     return UnknownError(message: msg);
   }
-
-  String _friendlyMessage(int statusCode) => switch (statusCode) {
-    400 => 'Invalid request — please check your input.',
-    409 => 'Setup has already been completed.',
-    500 => 'Server error — please try again later.',
-    _ => 'Request failed with status $statusCode.',
-  };
 }

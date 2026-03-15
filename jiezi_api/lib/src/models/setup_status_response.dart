@@ -12,16 +12,22 @@ class SetupStatusResponse {
   const SetupStatusResponse({
     required this.setupRequired,
     required this.version,
+    required this.registrationEnabled,
   });
-  
-  factory SetupStatusResponse.fromJson(Map<String, Object?> json) => _$SetupStatusResponseFromJson(json);
-  
+
+  factory SetupStatusResponse.fromJson(Map<String, Object?> json) =>
+      _$SetupStatusResponseFromJson(json);
+
   /// When `true` the server requires setup before it can be used.
   @JsonKey(name: 'setup_required')
   final bool setupRequired;
 
   /// Jiezi Cloud server version string.
   final String version;
+
+  /// When `true` unauthenticated visitors may create new accounts.
+  @JsonKey(name: 'registration_enabled')
+  final bool registrationEnabled;
 
   Map<String, Object?> toJson() => _$SetupStatusResponseToJson(this);
 }

@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:jiezi_web/l10n/app_localizations.dart';
 
 import '../../../../app/router/routes.dart';
+import '../../../setup/presentation/providers/setup_providers.dart';
 import '../providers/auth_providers.dart';
 
 /// Login page for the admin console.
@@ -46,6 +47,11 @@ class _LoginPageState extends ConsumerState<LoginPage> {
     final state = ref.watch(authProvider);
     final colorScheme = Theme.of(context).colorScheme;
     final textTheme = Theme.of(context).textTheme;
+    // Registration link visibility: hidden when the server has disabled
+    // public registration.  Defaults to visible while status is loading.
+    final registrationEnabled =
+        ref.watch(setupStatusProvider).asData?.value.registrationEnabled ??
+        true;
 
     ref.listen(authProvider, (_, next) {
       if (next case AsyncError(:final error)) {
@@ -164,16 +170,17 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                   ),
                 ),
                 const SizedBox(height: 16),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(l10n.noAccount),
-                    TextButton(
-                      onPressed: () => context.go(Routes.register),
-                      child: Text(l10n.registerLink),
-                    ),
-                  ],
-                ),
+                if (registrationEnabled)
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(l10n.noAccount),
+                      TextButton(
+                        onPressed: () => context.go(Routes.register),
+                        child: Text(l10n.registerLink),
+                      ),
+                    ],
+                  ),
               ],
             ),
           ),
